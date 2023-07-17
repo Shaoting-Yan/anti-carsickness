@@ -53,15 +53,16 @@ function requestAccess(){
 function draw() {
   background(0);
   if (Math.abs(accelerationX)>1){
-    accX += accelerationX*2;
+    accX += accelerationX*4;
   }
   if (Math.abs(accelerationY)>1){
     accY += accelerationY;
   }
+  roll = radians(rotationZ);
   push();
+  rotateZ(roll);
   translate(accX,0,0);
   translate(0,accY,0);
-  // rotate(0,0,rotateY);
   for(i=-20;i<30;i+=1){
     for(j=-20;j<30;j+=1){
       push();
@@ -75,9 +76,8 @@ function draw() {
   }
   pop();
   camX = constrain(-camZ*tan(radians(rotationY))/5,-300,300);//parallax
-  camY = constrain(-camZ*tan(radians(rotationX)-PI*0.45)/5,-300,300);//parallax
+  camY = constrain(-camZ*tan(radians(rotationX)-PI*0.3)/5,-300,300);//parallax
   camZ = camHeight + accelerationZ*2;
-  roll = radians(rotationZ);
   // upX = -sin(roll);
   // upY = cos(roll);
   // push();
