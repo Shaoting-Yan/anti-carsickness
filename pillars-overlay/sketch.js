@@ -4,9 +4,10 @@ let permissionGranted = false;
 let camX, camY, camZ;
 let obX, obY, obZ;
 let upX, upY;
+let toggle = false;
 function setup() {
   createCanvas(windowWidth,windowHeight,WEBGL);
-  background(0);
+  background(0,0,0,0);
   helvetica = loadFont('assets/Helvetica.ttf');
   textFont(helvetica);
   gradient = loadImage('assets/gradient.jpg');
@@ -39,6 +40,10 @@ function setup() {
   accY = 0;
 }
 
+function mousePressed(){
+  toggle = !toggle;
+}
+
 function requestAccess(){
   DeviceOrientationEvent.requestPermission().then(
     response => {if(response == 'granted'){
@@ -51,7 +56,7 @@ function requestAccess(){
 }
 
 function draw() {
-  background(0);
+  background(0,0,0,0);
   if (Math.abs(accelerationX)>0.1){
     accX += accelerationX*2;
   }
@@ -61,15 +66,18 @@ function draw() {
   push();
   translate(accX,0,0);
   translate(0,accY,0);
-  // rotate(0,0,rotateY);
   for(i=-20;i<30;i+=1){
     for(j=-20;j<30;j+=1){
       push();
       noStroke();
-      // texture(gradient);
-      translate(i*cell,j*cell,0);
-      rotateX(HALF_PI);
-      cylinder(r,r*4);
+      fill(255,255,255,128);
+      translate(i*cell,j*cell,r*2);
+      circle(0,0,r*2);
+      if (toggle){
+        translate(0,0,-r*2);
+        fill(0,0,0,128);
+        circle(0,0,r*2);
+      }
       pop();
     }
   }
@@ -77,14 +85,11 @@ function draw() {
   if (Math.abs(accelerationX) > 0.1){
 
   }
-  camX = constrain(-camZ*tan(radians(rotationY))/5,-300,300);//parallax
-  camX = constrain(-camZ*tan(radians(rotationY))/5,-300,300);//parallax
+  // camX = constrain(-camZ*tan(radians(rotationY))/5,-300,300);//parallax
+  // camY = constrain(-camZ*tan(radians(rotationX)-PI*0.45)/5,-300,300);//parallax
   camZ = camHeight + accelerationZ*2;
   roll = radians(rotationZ);
-  upX = -sin(roll);
+  upX = sin(roll);
   upY = cos(roll);
-  fill(255);
-  text(rz,0,50);
-  text(rotationZ,0,100);
   camera(camX, camY, camZ, obX, obY, obZ,upX,upY,0);
 }

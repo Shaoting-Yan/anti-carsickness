@@ -5,4 +5,7 @@ html, body {
 
 canvas {
   display: block;
+  background-image: url("assets/wechat.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
