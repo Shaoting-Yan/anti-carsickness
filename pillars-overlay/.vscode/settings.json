@@ -1,0 +1,9 @@
+{
+    "liveServer.settings.port": 5501,
+    "liveServer.settings.https": {
+        "enable": true, //set it true to enable the feature.
+        "cert": "C:\\Users\\shaot\\Downloads\\localhost.pem", //full path of the certificate
+        "key": "C:\\Users\\shaot\\Downloads\\localhost.key", //full path of the private key
+        "passphrase": "12345abcde"
+    }
+}
