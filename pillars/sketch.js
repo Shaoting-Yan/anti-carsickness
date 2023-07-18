@@ -1,3 +1,4 @@
+let toggle = false;
 let cell;
 let c,m,r;
 let permissionGranted = false;
@@ -50,13 +51,19 @@ function requestAccess(){
   this.remove();
 }
 
+function mousePressed(){
+  toggle = !toggle;
+}
+
 function draw() {
   background(0);
-  if (Math.abs(accelerationX)>1){
-    accX += accelerationX*4;
-  }
-  if (Math.abs(accelerationY)>1){
-    accY += accelerationY;
+  if(toggle){
+    if (Math.abs(accelerationX)>1){
+      accX += accelerationX*7;
+    }
+    if (Math.abs(accelerationY)>1){
+      accY += -accelerationY*5;
+    }
   }
   roll = radians(rotationZ);
   push();
@@ -76,13 +83,22 @@ function draw() {
   }
   pop();
   camX = constrain(-camZ*tan(radians(rotationY))/5,-300,300);//parallax
-  camY = constrain(-camZ*tan(radians(rotationX)-PI*0.3)/5,-300,300);//parallax
-  camZ = camHeight + accelerationZ*2;
+  if (toggle){
+    camY = -constrain(-camZ*tan(radians(rotationX)-PI*0.3)/5,-300,300);//parallax
+  }else{
+    camY = constrain(-camZ*tan(radians(rotationX)-PI*0.3)/5,-300,300);//parallax
+  }
+  camZ = camHeight + accelerationZ*5;
+  if(!toggle){
+    camX += accelerationX*20;//truck
+    camY += accelerationY*20;//truck
+  }
   // upX = -sin(roll);
   // upY = cos(roll);
   // push();
   // fill(255,0,0);
   // translate(0,0,r*2.1);
+  // text(accelerationX,0,100);
   // text(rotationZ,0,150);
   // text(rotationX,0,200);
   // text(rotationY,0,250);
