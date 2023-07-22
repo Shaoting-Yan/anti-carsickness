@@ -6,8 +6,10 @@ let toplevel = 0;
 let camX, camY, camZ;
 let obX, obY, obZ;
 let upX, upY;
-let currX, currY = 0;
+let currX = 0;
+let currY = 0;
 let currZ = 0;
+let currRx = 0;
 function setup() {
   createCanvas(windowWidth,windowHeight,WEBGL);
   noStroke();
@@ -132,42 +134,80 @@ function showdata(){
   pop();
 }
 
-function draw() {
-  var rotation = getEulerAngles(getRotationMatrix(rotationZ,rotationX,rotationY));
-  Rz = rotation[0];
-  Ry = rotation[2];
-  Rx = rotation[1];  
-  if(toggle){
-    background(0,0,0,0);
-  }else{
-    background(0);
-  }
-  if(pressed){
-    showdata();
-  }
+function frame(){
   push();
-  currX = camHeight*Ry;
   dy = -Math.sign(accelerationY)*(abs(accelerationY)**1.8);
   currY += dy;
   if (currY != 0){
     currY -= currY/(abs(currY)**0.8);       //damping
   }
-  translate(currX,currY,0);
-  for(i=-20;i<20;i+=1){
-    for(j=-20;j<20;j+=1){
-      push();
-      translate(i*cell,j*cell,0);
-      if(toggle){
-        fill(255,255,255,128);
-        circle(0,0,r*2);
-      }else{
-        rotateX(HALF_PI);
-        cylinder(r,r*4);
-      }
-      pop();
-    }
+
+  dx = Math.sign(accelerationX)*(abs(accelerationX)**1.8);
+  currX += dx;
+  if (currX != 0){
+    currX -= currX/(abs(currX)**0.8);       //damping
   }
+
+  translate(currX,currY,0);
+  strokeWeight(10);
+  noFill();
+  stroke(0,0,0,128);
+
+  if (currRx != Rx){
+    currRx += (Rx-currRx)/25; //Ease back
+  }
+
+  rotateX(Rx-currRx);
+  rect(-windowWidth/2,-windowHeight/2,windowWidth,windowHeight);
   pop();
+}
+
+function horizon(){
+  push();
+  dy = -Math.sign(accelerationY)*(abs(accelerationY)**1.8);
+  currY += dy;
+  if (currY != 0){
+    currY -= currY/(abs(currY)**0.8);       //damping
+  }
+
+  dx = Math.sign(accelerationX)*(abs(accelerationX)**1.8);
+  currX += dx;
+  if (currX != 0){
+    currX -= currX/(abs(currX)**0.8);       //damping
+  }
+
+  translate(currX,currY,0);
+  strokeWeight(8);
+  noFill();
+  stroke(0,0,0,128);
+
+  if (currRx != Rx){
+    currRx += (Rx-currRx)/50; //Ease back
+  }
+
+  rotateX(-HALF_PI+(Rx-currRx));
+  rect(-windowWidth/2,-100,windowWidth,200);
+  translate(0,0,1);
+  pop();
+}
+
+function draw() {
+  var rotation = getEulerAngles(getRotationMatrix(rotationZ,rotationX,rotationY));
+  Rz = rotation[0];
+  Ry = rotation[2];
+  Rx = rotation[1];  
+  background(0,0,0,0);
+  
+  if(pressed){
+    showdata();
+  }
+
+  if(toggle){
+    horizon();
+  }else{
+    frame();
+  }
+
   dx = 2*Math.sign(accelerationX)*(abs(accelerationX)**2);
   camX = dx;//parallax
   dz = Math.sign(accelerationZ)*(abs(accelerationZ)**2);
