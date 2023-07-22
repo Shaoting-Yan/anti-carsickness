@@ -138,7 +138,7 @@ function draw() {
     for(j=-20;j<20;j+=1){
       push();
       noStroke();
-      texture(gradient);
+      // texture(gradient);
       translate(i*cell,j*cell,0);
       rotateX(HALF_PI);
       cylinder(r,r*4);
@@ -149,8 +149,8 @@ function draw() {
   if(pressed){
     showdata();
   }
-  dx = Math.sign(accelerationX)*(abs(accelerationX)**2);
-  dz = Math.sign(accelerationZ)*(abs(accelerationZ)**3);
+  dx = 2*Math.sign(accelerationX)*(abs(accelerationX)**2);
+  dz = Math.sign(accelerationZ)*(abs(accelerationZ)**1.5);
   camX = dx;//parallax
   camZ = camHeight + dz;//front,back
   upX = sin(HALF_PI-Rz);//roll
