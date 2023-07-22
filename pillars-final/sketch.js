@@ -6,7 +6,7 @@ let toplevel = 0;
 let camX, camY, camZ;
 let obX, obY, obZ;
 let upX, upY;
-let currX;
+let currX, currY = 0;
 function setup() {
   createCanvas(windowWidth,windowHeight,WEBGL);
   background(0);
@@ -131,9 +131,14 @@ function draw() {
   Ry = rotation[2];
   Rx = rotation[1];  
   background(0);
+  if(pressed){
+    showdata();
+  }
   push();
   currX = camZ*Ry;
-  translate(currX,0,0);
+  dy = -Math.sign(accelerationY)*(abs(accelerationY)**1.5);
+  currY += dy;
+  translate(currX,currY,0);
   for(i=-20;i<20;i+=1){
     for(j=-20;j<20;j+=1){
       push();
@@ -146,9 +151,6 @@ function draw() {
     }
   }
   pop();
-  if(pressed){
-    showdata();
-  }
   dx = 2*Math.sign(accelerationX)*(abs(accelerationX)**2);
   dz = Math.sign(accelerationZ)*(abs(accelerationZ)**1.5);
   camX = dx;//parallax
