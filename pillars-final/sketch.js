@@ -9,10 +9,9 @@ let upX, upY;
 let currX, currY = 0;
 function setup() {
   createCanvas(windowWidth,windowHeight,WEBGL);
+  noStroke();
   background(0);
-  helvetica = loadFont('assets/Helvetica.ttf');
   textFont(helvetica);
-  gradient = loadImage('assets/gradient.jpg');
   if (typeof(DeviceOrientationEvent) !== 'undefined' && 
       typeof(DeviceOrientationEvent.requestPermission) === 'function'){
         DeviceOrientationEvent.requestPermission().catch(()=>{
@@ -40,6 +39,12 @@ function setup() {
   upY = 1;
   toplevel = 4*r;
 }
+
+function preload(){
+  helvetica = loadFont('assets/Helvetica.ttf');
+  gradient = loadImage('assets/gradient.jpg');
+}
+
 
 function requestAccess(){
   DeviceOrientationEvent.requestPermission().then(
@@ -107,7 +112,7 @@ function mouseReleased(){
 }
 
 function showdata(){
-  // translate(-windowWidth/2,-windowHeight/2,toplevel);
+  push();
   translate(-100,-275,toplevel);
   noStroke();
   fill(255,255,255,200);
@@ -123,6 +128,7 @@ function showdata(){
   for (i=0;i<3;i++){
     text(degrees((rotation[i])).toFixed(2),50,400+i*50);
   }
+  pop();
 }
 
 function draw() {
@@ -142,8 +148,6 @@ function draw() {
   for(i=-20;i<20;i+=1){
     for(j=-20;j<20;j+=1){
       push();
-      noStroke();
-      // texture(gradient);
       translate(i*cell,j*cell,0);
       rotateX(HALF_PI);
       cylinder(r,r*4);
