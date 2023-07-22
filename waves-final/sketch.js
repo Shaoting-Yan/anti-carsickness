@@ -150,11 +150,11 @@ function showdata(){
 function wave(i){
   this.yoff = i*0.1;
   this.xoff = 0;
-  this.render = function render(i,strength){
+  this.render = function render(i,strength,alpha){
     this.waveh = 10*i*(strength);
-    fill(175,175,255,50); //transparency
+    fill(175,175,255,alpha); //transparency
     strokeWeight(2);
-    stroke(120,120,200,255);
+    stroke(120,120,200,alpha*3);
     beginShape();
     this.xoff = 0;
     for(let x = -waveWidth; x<=waveWidth;x += precision){
@@ -179,7 +179,13 @@ function draw() {
   Ry = rotation[2];
   Rx = rotation[1];  
 
-  background(255);
+  if(toggle){
+    background(0,0,0,0);
+    alpha = 25;
+  }else{
+    background(255);
+    alpha = 100;
+  }
 
   if(pressed){showdata();}
 
@@ -191,11 +197,11 @@ function draw() {
 
   push();
   currX = camHeight*Ry;
-  translate(currX-width/2,100+currY);
+  translate(currX-width/2,50+currY);
   for(let i = 0;i<numLayers;i++){
     translate(0,0,i*10);
     strength = map(abs(currY),0,10,1,2);
-    all[i].render(i+1,strength);
+    all[i].render(i+1,strength,alpha);
   }
   pop();
 
@@ -215,7 +221,7 @@ function draw() {
   if (currRx != Rx){
     currRx += (Rx-currRx)/10; //Ease back
   }
-  camY = camHeight*tan(-0.1+Rx-currRx); //tilt
+  camY = camHeight*tan(-0.15+Rx-currRx); //tilt
 
 
   upX = sin(HALF_PI-Rz);//roll
