@@ -8,19 +8,6 @@ function drawPillars(){
         pop();
       }
     }
-    toplevel = r*5;
-  }
-
-  function drawBoxs(){
-    for(i=-20;i<20;i+=1){
-      for(j=-20;j<20;j+=1){
-        push();
-        translate(i*cell,j*cell,r*2);
-        box(r*2,r*2,r*2);
-        pop();
-      }
-    }
-    toplevel = r*3;
   }
   
   function drawButtons(){

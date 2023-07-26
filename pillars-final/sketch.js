@@ -1,3 +1,4 @@
+p5.disableFriendlyErrors = true;
 let permissionGranted = false;
 let pressed = false;
 let toggle = false;
@@ -62,7 +63,8 @@ function draw() {
   rotateZ(Rz-HALF_PI); 
   translate(currX,-currY,0);     
 
-  drawPillars();   
+  drawBoxs();
+
 
   //camera move due to acceleration and brake
   dz = Math.sign(accelerationZ)*(abs(accelerationZ)**2);
@@ -83,7 +85,7 @@ function draw() {
 
   camera(camX, camY, camZ, obX, obY, obZ,upX,upY,0);
   
-  perspective(PI/3, width/height, camZ-r*5, far);
+  perspective(PI/3, width/height, camZ-toplevel*1.2, far); //toplevel defined in visual cores
 
   layer.end();  
 
