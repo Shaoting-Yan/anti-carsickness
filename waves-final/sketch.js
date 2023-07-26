@@ -154,7 +154,7 @@ function wave(i){
     this.waveh = 10*i*(strength);
     fill(175,175,255,alpha); //transparency
     strokeWeight(2);
-    stroke(120,120,200,alpha*3);
+    stroke(120,120,200,alpha*3+50);
     beginShape();
     this.xoff = 0;
     for(let x = -waveWidth; x<=waveWidth;x += precision){
@@ -181,13 +181,13 @@ function draw() {
 
   if(toggle){
     background(0,0,0,0);
-    alpha = 25;
+    alpha = 0;
   }else{
     background(255);
     alpha = 100;
   }
 
-  if(pressed){showdata();}
+  // if(pressed){showdata();}
 
   dy = -Math.sign(accelerationY)*(abs(accelerationY)**1.5);
   currY += dy;

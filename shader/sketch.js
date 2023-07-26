@@ -1,32 +1,40 @@
-let blurRenderer
+// sketch.js
+let layer, fogShader, fog;
+function preload() {
+  fogShader = loadShader('fog.vert', 'fog.frag');
+}
 
 function setup() {
-  createCanvas(400, 400, WEBGL)
-  blurRenderer = createGaussianBlurRenderer()
-  blurRenderer.setIntensity(0.15)
-  blurRenderer.setSamples(20)
-  blurRenderer.setDof(50)
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  layer = createFramebuffer();
+  fog = color('#b2bdcf');
+  noStroke();
 }
 
 function draw() {
-  blurRenderer.draw(() => {
-    clear()
+  // Draw a scene to a framebuffer
+  layer.begin();
+  clear();
+  lights();
+  for (let i = 0; i < 12; i++) {
     push()
-    background(255)
-    noStroke()
-    lights()
+    translate(
+      sin(frameCount*0.050 + i*1)*150,
+      sin(frameCount*0.051 + i*2)*150,
+      sin(frameCount*0.049 + i*3)*175-75
+    );
+    sphere(50);
+    pop();
+  }
+  camera(0, 0, (height/2.0) / tan(PI*30.0 / 180.0), 0, 0, 0, 0, 1, 0);
+  perspective(PI/3, width/height,1000,10000);
+  layer.end();
 
-    push()
-    fill('blue')
-    translate(-80, -80, -300)
-    blurRenderer.focusHere()
-    sphere(50)
-    pop()
-
-    push()
-    fill('red')
-    sphere(50)
-    pop()
-    pop()
-  })
+  // Apply fog to the scene
+  shader(fogShader);
+  fogShader.setUniform('fog', [red(fog), green(fog), blue(fog)]);
+  fogShader.setUniform('img', layer.color);
+  fogShader.setUniform('depth', layer.depth);
+  rect(0, 0, width, height);
 }
+

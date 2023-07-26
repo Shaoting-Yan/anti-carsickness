@@ -1,5 +1,5 @@
-let cols = 18;
-let rows = 34;
+let cols = 25;
+let rows = 50;
 
 let particles = make2DArray(cols,rows);
 let springs = [];
@@ -13,16 +13,16 @@ let pressed = false;
 function setup() {
   createCanvas(windowWidth, windowHeight); 
   physics = new VerletPhysics2D();
-  gravity = new Vec2D(0, 0.2);
+  gravity = new Vec2D(0.5, 1);
   gb = new GravityBehavior(gravity);
-  physics.addBehavior(gb);
+  // physics.addBehavior(gb);
   mousePos = new Vec2D(mouseX, mouseY);
   mouseAttractor = new AttractionBehavior(mousePos,150, 2);
   physics.addBehavior(mouseAttractor);
 
-  let x = 25;
+  let x = -25;
   for (let i = 0; i < cols; i++) {
-    let y = 10;
+    let y = -25;
     for (let j = 0; j < rows; j++) {
       let p = new Particle(x, y);
       particles[i][j] = p;
@@ -44,8 +44,11 @@ function setup() {
       if (j != rows-1) {
         let b2 = particles[i][j+1];
         let s2 = new Spring(a, b2);
-        springs.push(s2);
+        // springs.push(s2);
         physics.addSpring(s2);
+      }
+      if (j == 0 && j == cols-1){
+        particles[i][j].lock();
       }
     }
   }
@@ -58,17 +61,20 @@ function setup() {
 
 function mousePressed(){
   pressed = true;
+  mouseAttractor.setStrength(10);
 }
 
 function mouseReleased(){
   pressed = false;
+  mouseAttractor.setStrength(2);
 }
 
 function draw() {
   background(0);
   if(pressed){
-    mousePos.set(mouseX, mouseY);
+    
   }
+  mousePos.set(mouseX, mouseY);
 
   physics.update();
 
