@@ -110,7 +110,7 @@ function draw() {
   translate(0,0,0)
   inks.noStroke();
   inks.fill(0);
-  inks.circle(groundSize/2+hori-sliceW/2,groundSize/2+verti*sin(pitch),5);
+  inks.circle(-camZ*Ry+groundSize/2+hori-sliceW/2,groundSize/2+verti*sin(pitch),5);
   inks.fill(255,255,255,30);
   inks.rect(0,0,groundSize,groundSize);
   pop();
@@ -122,7 +122,7 @@ function draw() {
   rotateX(HALF_PI);
   rectMode(CENTER);
 
-  // translate(100,0,0);//for yaw
+  translate(camZ*Ry,0,0);//for yaw
 
   translate(0,0,-sliceH);
   texture(inks);
