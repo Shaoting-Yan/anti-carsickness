@@ -53,3 +53,30 @@ function getRotationMatrix( alpha, beta, gamma ) {
   function dimmer(c,f){
     return color(hue(c),saturation(c),constrain(brightness(c)*f,0,255));
   }
+
+  function moveObject(Rx,Ry,Rz){
+    let currX = camHeight*Ry;   //for left right rotation
+    rotateZ(HALF_PI-Rz);        //tilting
+    translate(currX,0,0);     
+  }
+  
+  function moveCamera(Ax,Ay,Az){
+    //camera move due to acceleration and brake
+    let dz = Math.sign(Az)*(abs(Az)**2);
+    accZ = accZ == null ? camHeight : constrain(accZ+dz,-camHeight/2,camHeight*5);
+    if (accZ != 0){                                        
+      accZ -= accZ/(abs(accZ)**0.5); //damping
+    }
+    let camZ = camHeight + accZ;
+  
+    //camera move due to up down acceleration
+    let dy = he*Math.sign(Ay)*(abs(Ay)**2);
+    let camY = dy;
+    let obY = dy;
+  
+    //camera move due to left right acceleration
+    let dx = -sw*Math.sign(Ax)*(abs(Ax)**2);
+    let camX = dx;
+    let obX = dx;
+    camera(camX, camY, camZ, obX, obY, 0,0,1,0);
+  }

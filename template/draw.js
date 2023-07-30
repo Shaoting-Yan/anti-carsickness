@@ -1,4 +1,4 @@
-function drawPillars(c,m,r){
+function pillars(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
     for(i=-20;i<20;i+=1){
       for(j=-20;j<20;j+=1){
@@ -12,7 +12,7 @@ function drawPillars(c,m,r){
     toplevel = r*5;
   }
 
-  function drawBoxs(c,m,r){
+  function boxs(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
     for(i=-20;i<20;i+=1){
       for(j=-20;j<20;j+=1){
@@ -25,7 +25,7 @@ function drawPillars(c,m,r){
     toplevel = r*3;
   }
   
-  function drawButtons(c,m,r){
+  function buttons(c,m,r){
     for(i=-20;i<20;i+=1){
       for(j=-20;j<20;j+=1){
         push();
@@ -49,22 +49,17 @@ function drawPillars(c,m,r){
     }
   }
 
-  function showdata(){
+  function showdata(toplevel, messages){
     push();
-    translate(-100,-275,toplevel);
-    noStroke();
-    fill(255,255,255,200);
-    rect(40,30,60,485,15);
-    fill(0);
-    text(rotationX.toFixed(2),50,50);
-    text(rotationY.toFixed(2),50,100);
-    text(rotationZ.toFixed(2),50,150);
-    text(accelerationX.toFixed(2),50,200);
-    text(accelerationY.toFixed(2),50,250);
-    text(accelerationZ.toFixed(2),50,300);
-    var rotation = getEulerAngles(getRotationMatrix(rotationZ,rotationX,rotationY));
-    for (i=0;i<3;i++){
-      text(degrees((rotation[i])).toFixed(2),50,400+i*50);
-    }
+    fill('red');
+    textSize(20);
+    translate(0,0,toplevel);
+    for(let i = 0; i< messages.length; i++){
+      text(messages[i].toFixed(2), 10, i*25);
+    }    
     pop();
+  }
+
+  function dot(){
+    sphere(50,50,50);
   }
