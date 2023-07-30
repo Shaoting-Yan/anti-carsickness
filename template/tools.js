@@ -78,6 +78,11 @@ function getRotationMatrix( alpha, beta, gamma ) {
     let camY = accY;
     let obY = accY;
 
+    if (currRx != Rx){
+      currRx += (Rx-currRx)/da; //Ease back
+    }
+    obY += -camZ*tan(Rx-currRx);
+
     //camera move due to left and right
     let dx = sw*Math.sign(Ax)*(abs(Ax)**1.5);
     accX = accX == null ? 0 : accX+dx;

@@ -1,11 +1,26 @@
 function pillars(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
-    for(i=-20;i<20;i+=1){
+    let fullcount = int(PI*camHeight/cell);
+    for(i=-fullcount;i<fullcount;i+=1){
       for(j=-20;j<20;j+=1){
         push();
         translate(i*cell,j*cell,r*2);
         rotateX(HALF_PI);
         cylinder(r,r*4);
+        pop();
+      }
+    }
+    toplevel = r*5;
+  }
+
+function dots(c,m,r){
+    let cell = (windowWidth-2*r-2*m)/c;
+    let fullcount = int(PI*camHeight/cell);
+    for(i=-fullcount;i<fullcount;i+=1){
+      for(j=-20;j<20;j+=1){
+        push();
+        translate(i*cell,j*cell,0);
+        circle(0,0,r*2);
         pop();
       }
     }
@@ -58,8 +73,4 @@ function pillars(c,m,r){
       text(messages[i].toFixed(2), 10, i*25);
     }    
     pop();
-  }
-
-  function dot(){
-    sphere(50,50,50);
   }

@@ -5,7 +5,6 @@ let permissionGranted = false;
 let layer, Shader;
 //for camera integrate
 let accX, accY, accZ;
-
 let currRx = 0;
 
 function showUI(){

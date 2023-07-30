@@ -93,5 +93,5 @@ function getRotationMatrix( alpha, beta, gamma ) {
     let obX = accX;
 
     camera(camX, camY, camZ, obX, obY, 0,0,1,0);
-    // perspective(PI / 3.0, width / height, camZ-140, camZ);
+    perspective(PI / 3.0, width / height, camZ-175, camZ);
   }

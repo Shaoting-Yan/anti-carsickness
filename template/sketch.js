@@ -6,6 +6,8 @@ let layer, Shader;
 //for camera integrate
 let accX, accY, accZ;
 
+let currRx = 0;
+
 function showUI(){
   let gap = 40;
   heave = createSlider(1, 6, 3, 0);
