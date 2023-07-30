@@ -54,7 +54,7 @@ function setup() {
   groundSize = 1000;
 
   graphics = createGraphics(sliceW,sliceH);
-  inks = createGraphics(groundSize,groundSize);
+  inks = createGraphics(camHeight*2*PI,groundSize);
 
   //for toxiclib
   w = sliceH*0.6; //length of wire
@@ -109,9 +109,10 @@ function draw() {
   push();
   translate(0,0,0)
   inks.noStroke();
-  inks.fill(0);
-  inks.circle(-camZ*Ry+groundSize/2+hori-sliceW/2,groundSize/2+verti*sin(pitch),5);
-  inks.fill(255,255,255,30);
+  noise()
+  inks.fill(random(0,255),random(0,255),random(0,255));
+  inks.circle(-camZ*Ry+groundSize/2+hori-sliceW/2,groundSize/2+verti*sin(pitch),20);
+  inks.fill(255,255,255,10);
   inks.rect(0,0,groundSize,groundSize);
   pop();
 
@@ -144,13 +145,18 @@ function draw() {
   buttonend.display();
   w1.display();
 
-  for (let p of tailp) {
-    p.display();
-    // p.getx();
-  }
+  // for (let p of tailp) {
+  //   p.display();
+  //   // p.getx();
+  // }
   //toxiclib
 
   //plane that pendulum is on
+  push();
+  fill(0);
+  cylinder(25,5);//top fix point
+  pop();
+
   push();
   texture(graphics);
   translate(-sliceW/2,0,0);
@@ -179,9 +185,9 @@ function draw() {
 
   camZ = camHeight + currZ;//front,back
 
-  //camera move due to left right acceleration
-  // dx = 2*Math.sign(accelerationX)*(abs(accelerationX)**2);
-  // camX = dx;
+  // camera move due to left right acceleration
+  dx = 2*Math.sign(accelerationX)*(abs(accelerationX)**2);
+  camX = -dx;
+  obX = -dx;
   camera(camX, camY, camZ, obX, obY, obZ,upX,upY,0);
-  // orbitControl();
 }

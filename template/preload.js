@@ -14,7 +14,7 @@ function preload(){
   
     helvetica = loadFont('assets/Helvetica.ttf');
     //for framebuffer
-    fogShader = loadShader('shaders/fog.vert', 'shaders/fog.frag');
+    Shader = loadShader('shaders/basic.vert', 'shaders/basic.frag');
   }
   
   function requestAccess(){

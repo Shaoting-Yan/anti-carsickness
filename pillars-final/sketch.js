@@ -1,28 +1,27 @@
 p5.disableFriendlyErrors = true;
 let permissionGranted = false;
-let pressed = false;
-let toggle = false;
-let c,m,r,cell;
-let toplevel = 0;
+
+//camera
 let camX, camY, camZ;
 let obX, obY, obZ;
 let upX, upY;
+
+//geometry location
 let currX = 0;
 let currY = 0;
 let currZ = 0;
+
 //for the shader;
 let layer, fogShader, fog;
 
 function setup() {
   createCanvas(windowWidth,windowHeight,WEBGL);
-  noStroke();
-  background(0);
   textFont(helvetica);
-  c = 3;
-  m = -25;
-  r = windowWidth/12;
+
+  background('darkslategray');
+
   camHeight = height/2/tan(PI/6);
-  cell = (windowWidth-2*r-2*m)/c;
+
   camX = 0;
   camY = 0;
   camZ = camHeight;
@@ -31,8 +30,6 @@ function setup() {
   obZ = 0;
   upX = 0;
   upY = 1;
-  upZ = 0;
-  toplevel = 4*r;
 
   //framebuffer
   layer = createFramebuffer();
@@ -40,7 +37,7 @@ function setup() {
 
 function draw() {
 
-  var rotation = getEulerAngles(getRotationMatrix(rotationZ,rotationX,rotationY));
+  let rotation = getEulerAngles(getRotationMatrix(rotationZ,rotationX,rotationY));
   Rz = rotation[0];
   Ry = rotation[2];
   Rx = rotation[1];  
@@ -63,14 +60,13 @@ function draw() {
   rotateZ(Rz-HALF_PI); 
   translate(currX,-currY,0);     
 
-  drawBoxs();
-
+  drawPillars(3,-25,windowWidth/12); //(cell,margin,radius)
 
   //camera move due to acceleration and brake
   dz = Math.sign(accelerationZ)*(abs(accelerationZ)**2);
   currZ = constrain(currZ+dz,-camHeight/2,camHeight*5);
-  if (currZ != 0){                                        //damping
-    currZ -= currZ/(abs(currZ)**0.5);
+  if (currZ != 0){                                        
+    currZ -= currZ/(abs(currZ)**0.5); //damping
   }
 
   camZ = camHeight + currZ;//front,back
