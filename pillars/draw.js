@@ -2,7 +2,7 @@ function pillars(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
     let fullcount = int(PI*camHeight/cell);
     for(i=-fullcount;i<fullcount;i+=1){
-      for(j=-20;j<20;j+=1){
+      for(j=-10;j<10;j+=1){
         push();
         translate(i*cell,j*cell,r*2);
         rotateX(HALF_PI);
