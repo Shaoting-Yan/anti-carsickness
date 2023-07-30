@@ -79,7 +79,7 @@ function getRotationMatrix( alpha, beta, gamma ) {
     let obY = accY;
 
     //camera move due to left and right
-    let dx = sw*Math.sign(Ax)*(abs(Ax)**1.5);
+    let dx = -sw*Math.sign(Ax)*(abs(Ax)**1.5);
     accX = accX == null ? 0 : accX+dx;
     if (accX != 0){                                        
       accX -= accX/10; //damping
