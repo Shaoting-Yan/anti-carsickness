@@ -40,8 +40,7 @@ function draw() {
   clear();
   noStroke();
   background(0);
-  // lights();
-  ambientLight('white');
+  lights();
 
   push();
 
