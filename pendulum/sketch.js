@@ -7,19 +7,20 @@ let layer, Shader;
 let accX, accY, accZ;
 
 let currRx = 0;
+let currRz = 0;
 
 function showUI(){
   let gap = 40;
-  heave = createSlider(1, 6, 3, 0);
+  heave = createSlider(0, 6, 3, 0);
   heave.position(120, 500);
   heave.style('width', '200px');
-  sway = createSlider(1, 6, 3, 0);
+  sway = createSlider(0, 6, 3, 0);
   sway.position(120, 500+gap);
   sway.style('width', '200px');
-  surge = createSlider(1, 6, 3, 0);
+  surge = createSlider(0, 6, 3, 0);
   surge.position(120, 500+gap*2);
   surge.style('width', '200px');
-  damp = createSlider(1, 6, 3, 0);
+  damp = createSlider(0, 6, 3, 0);
   damp.position(120, 500+gap*3);
   damp.style('width', '200px');
 
@@ -44,14 +45,19 @@ function setup() {
   background('darkslategray');
 
   camHeight = height/2/tan(PI/6);
+  groundDepth = 1000;
+  sliceW = width;
+  sliceH = height*0.85;
+
   //framebuffer
   layer = createFramebuffer();
-  
+
+  inks = createGraphics(camHeight*2*PI,groundDepth);
+  pendulum = createGraphics(sliceW,sliceH);
   showUI();
 }
 
 function draw() {
-
   let rotation = getEulerAngles(getRotationMatrix(rotationZ,rotationX,rotationY));
   Rz = rotation[0];
   Ry = rotation[2];
@@ -62,30 +68,42 @@ function draw() {
   su = surge.value();
   da = damp.value();
 
-  //start framebuffer
-  layer.begin();
-
-  clear();
-  noStroke();
-  background(0);
+  background('200');
   lights();
 
-  push();
+  pendulum.background(0,0,0,0);
+  drawPendulum(pendulum);
 
-  moveObject(Rx,Ry,Rz);
-  pillars(3,-25,windowWidth/12); //(cell,margin,radius)
+  ground(camHeight*2*PI,groundDepth,sliceH);
+  flap(sliceW,sliceH,pendulum);
 
-  pop();
+  moveCamera(accelerationX,accelerationY,accelerationZ,height/2);
+  // orbitControl();
 
-  moveCamera(accelerationX,accelerationY,accelerationZ);
+  // //start framebuffer
+  // layer.begin();
 
-  showdata(200,[heave.value(),sway.value(),surge.value()]);
+  // clear();
+  // noStroke();
+  // background(0);
+  // lights();
 
-  layer.end(); //end frame buffer
+  // push();
 
-  //apply depth buffer
-  shader(Shader);
-  Shader.setUniform('depth', layer.depth);
-  Shader.setUniform('img', layer.color);
-  rect(0,0,width,height);
+  // moveObject(Rx,Ry,Rz);
+  // pillars(3,-25,windowWidth/12); //(cell,margin,radius)
+
+  // pop();
+
+  // moveCamera(accelerationX,accelerationY,accelerationZ);
+
+  // showdata(200,[heave.value(),sway.value(),surge.value()]);
+
+  // layer.end(); //end frame buffer
+
+  // //apply depth buffer
+  // shader(Shader);
+  // Shader.setUniform('depth', layer.depth);
+  // Shader.setUniform('img', layer.color);
+  // rect(0,0,width,height);
 }

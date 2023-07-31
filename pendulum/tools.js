@@ -60,7 +60,7 @@ function getRotationMatrix( alpha, beta, gamma ) {
     translate(currX,0,0);     
   }
   
-  function moveCamera(Ax,Ay,Az){
+  function moveCamera(Ax,Ay,Az,offset){
     //camera move due to acceleration and brake
     let dz = su*Math.sign(Az)*(abs(Az)**1.5);
     accZ = accZ == null ? camHeight : constrain(accZ+dz,-camHeight/2,camHeight*5);
@@ -78,11 +78,6 @@ function getRotationMatrix( alpha, beta, gamma ) {
     let camY = accY;
     let obY = accY;
 
-    if (currRx != Rx){
-      currRx += (Rx-currRx)/da; //Ease back
-    }
-    obY += -camZ*tan(Rx-currRx);
-
     //camera move due to left and right
     let dx = sw*Math.sign(Ax)*(abs(Ax)**1.5);
     accX = accX == null ? 0 : accX+dx;
@@ -92,6 +87,6 @@ function getRotationMatrix( alpha, beta, gamma ) {
     let camX = accX;
     let obX = accX;
 
-    camera(camX, camY, camZ, obX, obY, 0,0,1,0);
+    camera(camX, camY+offset, camZ, obX, obY+offset, 0,0,1,0);
     // perspective(PI / 3.0, width / height, camZ-140, camZ);
   }

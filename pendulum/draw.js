@@ -12,7 +12,7 @@ function pillars(c,m,r){
     toplevel = r*5;
   }
 
-  function boxs(c,m,r){
+function boxs(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
     for(i=-20;i<20;i+=1){
       for(j=-20;j<20;j+=1){
@@ -25,7 +25,7 @@ function pillars(c,m,r){
     toplevel = r*3;
   }
   
-  function buttons(c,m,r){
+function buttons(c,m,r){
     for(i=-20;i<20;i+=1){
       for(j=-20;j<20;j+=1){
         push();
@@ -49,7 +49,7 @@ function pillars(c,m,r){
     }
   }
 
-  function showdata(toplevel, messages){
+function showdata(toplevel, messages){
     push();
     fill('red');
     textSize(20);
@@ -60,6 +60,38 @@ function pillars(c,m,r){
     pop();
   }
 
-  function dot(){
-    sphere(50,50,50);
+function ground(w,d,h){
+  push();
+  rotateX(HALF_PI);
+  translate(0,0,-h);
+  rectMode(CENTER);
+  rect(0,0,w,d);
+  pop();
+}
+
+function flap(w,h,sth){
+  push();
+  texture(sth);
+  noStroke();
+  if (currRx != Rx){
+    currRx += (Rx-currRx)/da; //Ease back
   }
+  rotateX(Rx-currRx);
+  rect(-w/2,0,w,h);
+  pop();
+}
+
+function drawPendulum(board){
+  let w = board.width;
+  let h = board.height;
+  if (currRz != Rz){
+    currRz += (Rz-currRz)/da; //Ease back
+  }
+  board.push();
+  board.clear();
+  board.fill(0);
+  board.translate(w/2,0);
+  board.rotate(HALF_PI-currRz);
+  board.line(0,0,0,h*0.7);
+  board.pop();
+}

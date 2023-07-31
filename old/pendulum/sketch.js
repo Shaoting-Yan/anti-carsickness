@@ -87,8 +87,6 @@ function setup() {
     physics.addSpring(s);
   }
 
-
-
   //for buffer gravity
   hori = 0;
   verti = 0;
