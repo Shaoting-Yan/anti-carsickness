@@ -15,6 +15,7 @@ function preload(){
     helvetica = loadFont('assets/Helvetica.ttf');
     //for framebuffer
     Shader = loadShader('shaders/basic.vert', 'shaders/basic.frag');
+    gradient = loadImage('assets/gradient.jpg');
   }
   
   function requestAccess(){

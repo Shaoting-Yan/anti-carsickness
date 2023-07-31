@@ -49,9 +49,23 @@ function getRotationMatrix( alpha, beta, gamma ) {
     let result = palette[names[index]];
     return result;
   }
-  
+
+  function getColor(fc){
+    push();
+    let i = int((fc*0.5)%100);//normalize into 1 second
+    colorMode(HSB,100);
+    let result = color(i,50,100);
+    pop();
+    return result;
+  }
+
   function dimmer(c,f){
     return color(hue(c),saturation(c),constrain(brightness(c)*f,0,255));
+  }
+
+  function setAlpha(c,a){
+    colorMode(HSB);
+    return color(hue(c),saturation(c),brightness(c),a);
   }
 
   function moveObject(Rx,Ry,Rz){
@@ -59,7 +73,7 @@ function getRotationMatrix( alpha, beta, gamma ) {
     rotateZ(HALF_PI-Rz);        //tilting
     translate(currX,0,0);     
   }
-  
+
   function moveCamera(Ax,Ay,Az,offset){
     //camera move due to acceleration and brake
     let dz = su*Math.sign(Az)*(abs(Az)**1.5);
@@ -89,4 +103,8 @@ function getRotationMatrix( alpha, beta, gamma ) {
 
     camera(camX, camY+offset, camZ, obX, obY+offset, 0,0,1,0);
     // perspective(PI / 3.0, width / height, camZ-140, camZ);
+  }
+
+  function saveDrawing(){
+    saveCanvas(inks, 'drawing', 'png');
   }

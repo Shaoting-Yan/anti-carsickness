@@ -9,6 +9,14 @@ let accX, accY, accZ;
 let currRx = 0;
 let currRz = 0;
 
+let currColor = 0;
+
+let inkx = 0;
+let inkz = 0;
+
+let prevx = 0;
+let prevy = 0;
+
 function showUI(){
   let gap = 40;
   heave = createSlider(0, 6, 3, 0);
@@ -52,9 +60,11 @@ function setup() {
   //framebuffer
   layer = createFramebuffer();
 
-  inks = createGraphics(camHeight*2*PI,groundDepth);
+  inks = createGraphics(camHeight*2*PI/2,groundDepth/2);
   pendulum = createGraphics(sliceW,sliceH);
   showUI();
+  button1 = createButton('view drawing');
+  button1.position(200, 450);
 }
 
 function draw() {
@@ -68,42 +78,29 @@ function draw() {
   su = surge.value();
   da = damp.value();
 
-  background('200');
-  lights();
+  button1.mousePressed(saveDrawing);
 
-  pendulum.background(0,0,0,0);
-  drawPendulum(pendulum);
+  layer.begin();
+  clear();
+  background(255);
+  ambientLight(255);
 
-  ground(camHeight*2*PI,groundDepth,sliceH);
+  currX = camHeight*Ry;   //for left right rotation
+
+  currColor = getColor(frameCount);
+  drawPendulum(pendulum,currColor);
+  drawInks(inks,currColor,currX);
+
+  ground(camHeight*2*PI,groundDepth,sliceH,inks);
   flap(sliceW,sliceH,pendulum);
 
   moveCamera(accelerationX,accelerationY,accelerationZ,height/2);
-  // orbitControl();
 
-  // //start framebuffer
-  // layer.begin();
+  layer.end(); //end frame buffer
 
-  // clear();
-  // noStroke();
-  // background(0);
-  // lights();
-
-  // push();
-
-  // moveObject(Rx,Ry,Rz);
-  // pillars(3,-25,windowWidth/12); //(cell,margin,radius)
-
-  // pop();
-
-  // moveCamera(accelerationX,accelerationY,accelerationZ);
-
-  // showdata(200,[heave.value(),sway.value(),surge.value()]);
-
-  // layer.end(); //end frame buffer
-
-  // //apply depth buffer
-  // shader(Shader);
-  // Shader.setUniform('depth', layer.depth);
-  // Shader.setUniform('img', layer.color);
-  // rect(0,0,width,height);
+  //apply depth buffer
+  shader(Shader);
+  Shader.setUniform('depth', layer.depth);
+  Shader.setUniform('img', layer.color);
+  rect(0,0,width,height);
 }

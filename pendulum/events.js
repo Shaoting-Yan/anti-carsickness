@@ -1,3 +1,3 @@
-function mouseisPressed(){
-  showdata();
+function mousePressed(){
+  
 }
