@@ -6,6 +6,7 @@ let layer, Shader;
 //for camera integrate
 let accX, accY, accZ;
 let currRx = 0;
+let heave,sway,surge,damp;
 
 function showUI(){
   let gap = 40;
@@ -37,6 +38,7 @@ function showUI(){
 }
 
 function setup() {
+  pixelDensity(1);
   createCanvas(windowWidth,windowHeight,WEBGL);
   textFont(helvetica);
 
@@ -56,6 +58,10 @@ function draw() {
   Ry = rotation[2];
   Rx = rotation[1];  
   
+  // he = checkNull(heave);
+  // sw = checkNull(sway);
+  // su = checkNull(surge);
+  // da = checkNull(damp);
   he = heave.value();
   sw = sway.value();
   su = surge.value();
@@ -70,15 +76,14 @@ function draw() {
   lights();
 
   push();
-
   moveObject(Rx,Ry,Rz);
   pillars(3,-25,windowWidth/12); //(cell,margin,radius)
-
   pop();
 
   moveCamera(accelerationX,accelerationY,accelerationZ);
 
-  showdata(200,[heave.value(),sway.value(),surge.value()]);
+  // showdata(200,[heave.value(),sway.value(),surge.value()]);
+  showdata(200,[frameRate()]);
 
   layer.end(); //end frame buffer
 

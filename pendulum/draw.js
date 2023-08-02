@@ -76,7 +76,7 @@ function flap(w,h,sth){
 
   noStroke();
   if (currRx != Rx){
-    currRx += (Rx-currRx)/da; //Ease back
+    currRx += (Rx-currRx)/da*3; //Ease back
   }
   push();
   fill(0);
@@ -97,7 +97,7 @@ function drawPendulum(board,color){
   let tw = 30;
   let th = 80;
   if (currRz != Rz){
-    currRz += (Rz-currRz)/da; //Ease back
+    currRz += (Rz-currRz)/3; //Ease back
   }
   board.push();
   board.clear();
@@ -123,11 +123,12 @@ function drawInks(board,color,offset){
   color = setAlpha(color,50);
   board.push();
   board.noStroke();
-  board.background(255,255,255,0);
+  board.background(255,255,255,1);
   board.fill(color);
   // board.circle(mapx,mapy,accY+10);
   board.push();
   board.strokeWeight(accY/2+5);
+  color = setAlpha(color,abs(accY)*2+50);
   board.stroke(color);
   board.line(prevx,prevy,mapx,mapy);
   board.pop();

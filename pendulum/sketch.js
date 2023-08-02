@@ -28,7 +28,7 @@ function showUI(){
   surge = createSlider(0, 6, 3, 0);
   surge.position(120, 500+gap*2);
   surge.style('width', '200px');
-  damp = createSlider(0, 6, 3, 0);
+  damp = createSlider(0, 50, 3, 0);
   damp.position(120, 500+gap*3);
   damp.style('width', '200px');
 
@@ -47,6 +47,7 @@ function showUI(){
 }
 
 function setup() {
+  pixelDensity(1);
   createCanvas(windowWidth,windowHeight,WEBGL);
   textFont(helvetica);
 
@@ -97,6 +98,8 @@ function draw() {
   moveCamera(accelerationX,accelerationY,accelerationZ,height/2);
 
   layer.end(); //end frame buffer
+
+  showdata(100,[frameRate()]);
 
   //apply depth buffer
   shader(Shader);

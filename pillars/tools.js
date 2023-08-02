@@ -95,3 +95,13 @@ function getRotationMatrix( alpha, beta, gamma ) {
     camera(camX, camY, camZ, obX, obY, 0,0,1,0);
     perspective(PI / 3.0, width / height, camZ-175, camZ);
   }
+
+function checkNull(sth){
+  // if (sth == null){
+  //   console.log("here");
+  //   return 1;
+  // }else{
+  //   return sth.value();
+  // }
+  return 1;
+}
