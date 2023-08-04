@@ -70,9 +70,11 @@ function wave(i){
   this.render = function render(i,strength,alpha){
     this.waveh = 10*i*(strength);
     fill("#"+palette[numLayers-i]);
-    stroke("#"+strokePalette[numLayers-i]);
-    let weight = map(i/numLayers,0,1,5,2); 
-    strokeWeight(weight);
+    // stroke("#"+strokePalette[numLayers-i]);
+    stroke(0);
+    strokeWeight(3);
+    // // let weight = map(i/numLayers,0,1,2,5); // weihght varation 
+    // strokeWeight(weight);
     beginShape();
     this.xoff = 0;
     for(let x = -waveWidth; x<=waveWidth;x += precision){
@@ -92,11 +94,12 @@ function wave(i){
 }  
 
 function waves(currX,currY,numLayers){
+  let gap = 100/numLayers;
   push();
   rotateZ(HALF_PI-Rz);
   translate(currX-width/2,50+currY);
   for(let i = 0;i<numLayers;i++){
-    translate(0,0,i*10);
+    translate(0,0,i*gap);//control spacing
     strength = map(abs(currY),0,10,1,2);
     all[i].render(i+1,strength,100);
   }
@@ -107,10 +110,11 @@ function sun(x,y,p){
   let r = 50;
   let changed = r+breath(p,r);
   push()
-  translate(x,y,-changed);
-  noStroke();
+  translate(x,y,-10);
+  stroke(0);
+  strokeWeight(3);
   fill('#F2C37E');
-  sphere(changed);
+  circle(0,0,150);
   pop();
 }
 
