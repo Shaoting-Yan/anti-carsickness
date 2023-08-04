@@ -48,6 +48,9 @@ function setup() {
     all.push(new wave(i));
   }
   waveWidth = width*6;
+
+  let a = createA('https://shaoting-yan.github.io/anti-carsickness/waves/', 'to pure mode');
+  a.position(10, 10);
 }
 
 function draw() {
@@ -68,9 +71,7 @@ function draw() {
 
   moveCamera(accelerationX,accelerationY,accelerationZ);
 
-  let p = 0;
-
-  sun(0,0,p);//x,y,period
+  // sun(0,0,p);//x,y,period
 
   waves(currX,accY/25,numLayers);
 

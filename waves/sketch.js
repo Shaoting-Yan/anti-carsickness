@@ -53,6 +53,9 @@ function setup() {
     all.push(new wave(i));
   }
   waveWidth = width*6;
+
+  let a = createA('https://shaoting-yan.github.io/anti-carsickness/waves-overlay/', 'to pure mode');
+  a.position(10, 10);
 }
 
 function draw() {
