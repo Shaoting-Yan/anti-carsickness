@@ -12,7 +12,7 @@ function pillars(c,m,r){
     toplevel = r*5;
   }
 
-function boxs(c,m,r){
+  function boxs(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
     for(i=-20;i<20;i+=1){
       for(j=-20;j<20;j+=1){
@@ -25,7 +25,7 @@ function boxs(c,m,r){
     toplevel = r*3;
   }
   
-function buttons(c,m,r){
+  function buttons(c,m,r){
     for(i=-20;i<20;i+=1){
       for(j=-20;j<20;j+=1){
         push();
@@ -49,10 +49,10 @@ function buttons(c,m,r){
     }
   }
 
-function showdata(toplevel, messages){
+  function showdata(toplevel, messages){
     push();
     fill('red');
-    textSize(10);
+    textSize(20);
     translate(0,0,toplevel);
     for(let i = 0; i< messages.length; i++){
       text(messages[i].toFixed(2), 10, i*25);
@@ -60,95 +60,72 @@ function showdata(toplevel, messages){
     pop();
   }
 
-function ground(w,d,h,sth){
-  push();
-  noStroke();
-  rotateX(HALF_PI);
-  translate(currX,0,-h);
-  rectMode(CENTER);
-  texture(sth);
-  rect(0,0,w,d);
-  pop();
-}
-
-function flap(w,h,sth){
-  push();
-
-  noStroke();
-  if (currRx != Rx){
-    currRx += (Rx-currRx)/da*3; //Ease back
+  function dot(){
+    sphere(50,50,50);
   }
-  push();
-  fill(0);
-  box(50,20,20);
-  pop();
-  rotateX(Rx-currRx);
-  texture(sth);
-  rect(-w/2,0,w,h);
-  pop();
-  inkz = h*asin(Rx-currRx);
-}
 
-function drawPendulum(board,color){
-  let w = board.width;
-  let h = board.height;
-  let l = h*0.7;
-  let r = 10;
-  let tw = 30;
-  let th = 80;
-  if (currRz != Rz){
-    currRz += (Rz-currRz)/3; //Ease back
+function wave(i){
+  this.yoff = i*0.1;
+  this.xoff = 0;
+  this.render = function render(i,strength,alpha){
+    this.waveh = 10*i*(strength);
+    fill("#"+palette[numLayers-i]);
+    stroke("#"+strokePalette[numLayers-i]);
+    let weight = map(i/numLayers,0,1,5,2); 
+    strokeWeight(weight);
+    beginShape();
+    this.xoff = 0;
+    for(let x = -waveWidth; x<=waveWidth;x += precision){
+      y = map(noise(this.xoff, this.yoff),
+                    0,1,
+                    -this.waveh,
+                    this.waveh); /// generate 2-d noise values
+      vertex(x,y); /// construct wave form
+      this.xoff += 0.02;
+    }
+    this.yoff += 0.005;
+    vertex(waveWidth, height); /// complete the wave layer
+    vertex(waveWidth, height); /// tie the last x to the side if not perfect x10 width
+    vertex(-waveWidth, height);
+    endShape(CLOSE);
   }
-  board.push();
-  board.clear();
-  board.translate(w/2,0);
-  board.rotate(HALF_PI-currRz);
-  board.strokeWeight(2);
-  board.line(0,0,0,l);
-  board.fill(0);
-  board.circle(0,l+r/2,r);
-  l += r/2;
-  board.fill(color);
-  board.triangle(-tw/2,l,tw/2,l,0,l+th);
-  l += th;
-  board.pop();
-  inkx = -h*asin(HALF_PI-currRz);
+}  
+
+function waves(currX,currY,numLayers){
+  push();
+  rotateZ(HALF_PI-Rz);
+  translate(currX-width/2,50+currY);
+  for(let i = 0;i<numLayers;i++){
+    translate(0,0,i*10);
+    strength = map(abs(currY),0,10,1,2);
+    all[i].render(i+1,strength,100);
+  }
+  pop();
 }
 
-function drawInks(board,color,offset){
-  let w = board.width;
-  let h = board.height;
-  let mapx = -offset/2+w/2+inkx/2;
-  let mapy = h/2+inkz/2;
-  color = setAlpha(color,50);
-  board.push();
-  board.noStroke();
-  board.background(255,255,255,1);
-  board.fill(color);
-  // board.circle(mapx,mapy,accY+10);
-  board.push();
-  board.strokeWeight(accY/2+5);
-  color = setAlpha(color,abs(accY)*2+50);
-  board.stroke(color);
-  board.line(prevx,prevy,mapx,mapy);
-  board.pop();
-  prevx = mapx;
-  prevy = mapy;
-  board.pop();
+function sun(currX,accY,x,y){
+  let r = 100;
+  push()
+  translate(0,0,-r);
+  noStroke();
+  fill('#F2C37E');
+  sphere(r);
+  pop();
 }
 
 function showUI(){
+  shown = true;
   let gap = 40;
-  heave = createSlider(0, 6, 3, 0);
+  heave = createSlider(0.1, 6, he, 0);
   heave.position(120, 500);
   heave.style('width', '200px');
-  sway = createSlider(0, 6, 3, 0);
+  sway = createSlider(0.1, 6, sw, 0);
   sway.position(120, 500+gap);
   sway.style('width', '200px');
-  surge = createSlider(0, 6, 3, 0);
+  surge = createSlider(0.1, 6, su, 0);
   surge.position(120, 500+gap*2);
   surge.style('width', '200px');
-  damp = createSlider(0, 50, 3, 0);
+  damp = createSlider(1, 30, da, 0);
   damp.position(120, 500+gap*3);
   damp.style('width', '200px');
 
@@ -164,4 +141,5 @@ function showUI(){
   p4 = createP('damp');
   p4.style('font-size', '20px');
   p4.position(330, 475+gap*3);
+  tweak.remove();
 }

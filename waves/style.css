@@ -1,0 +1,13 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+  background: rgb(247,249,243);
+  background: linear-gradient(0deg, rgba(247,249,243,1) 50%, rgba(237,202,185,1) 100%);
+  /* background-image: url("assets/wechat mid.jpg");/*background*/
+  /* background-size: cover;
+  background-repeat: no-repeat; */ 
+}

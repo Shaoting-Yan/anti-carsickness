@@ -48,7 +48,7 @@ function setup() {
   //framebuffer
   layer = createFramebuffer();
   
-  showUI();
+  // showUI();
 }
 
 function draw() {
@@ -58,14 +58,14 @@ function draw() {
   Ry = rotation[2];
   Rx = rotation[1];  
   
-  // he = checkNull(heave);
-  // sw = checkNull(sway);
-  // su = checkNull(surge);
-  // da = checkNull(damp);
-  he = heave.value();
-  sw = sway.value();
-  su = surge.value();
-  da = damp.value();
+  he = checkNull(heave);
+  sw = checkNull(sway);
+  su = checkNull(surge);
+  da = checkNull(damp);
+  // he = heave.value();
+  // sw = sway.value();
+  // su = surge.value();
+  // da = damp.value();
 
   //start framebuffer
   layer.begin();

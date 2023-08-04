@@ -17,35 +17,6 @@ let inkz = 0;
 let prevx = 0;
 let prevy = 0;
 
-function showUI(){
-  let gap = 40;
-  heave = createSlider(0, 6, 3, 0);
-  heave.position(120, 500);
-  heave.style('width', '200px');
-  sway = createSlider(0, 6, 3, 0);
-  sway.position(120, 500+gap);
-  sway.style('width', '200px');
-  surge = createSlider(0, 6, 3, 0);
-  surge.position(120, 500+gap*2);
-  surge.style('width', '200px');
-  damp = createSlider(0, 50, 3, 0);
-  damp.position(120, 500+gap*3);
-  damp.style('width', '200px');
-
-  p1 = createP('heave');
-  p1.style('font-size', '20px');
-  p1.position(330, 475);
-  p2 = createP('sway');
-  p2.style('font-size', '20px');
-  p2.position(330, 475+gap);
-  p3 = createP('surge');
-  p3.style('font-size', '20px');
-  p3.position(330, 475+gap*2);
-  p4 = createP('damp');
-  p4.style('font-size', '20px');
-  p4.position(330, 475+gap*3);
-}
-
 function setup() {
   pixelDensity(1);
   createCanvas(windowWidth,windowHeight,WEBGL);
@@ -63,9 +34,9 @@ function setup() {
 
   inks = createGraphics(camHeight*2*PI/2,groundDepth/2);
   pendulum = createGraphics(sliceW,sliceH);
-  showUI();
-  button1 = createButton('view drawing');
-  button1.position(200, 450);
+  // showUI();
+  // button1 = createButton('view drawing');
+  // button1.position(200, 450);
 }
 
 function draw() {
@@ -74,12 +45,16 @@ function draw() {
   Ry = rotation[2];
   Rx = rotation[1];  
   
-  he = heave.value();
-  sw = sway.value();
-  su = surge.value();
-  da = damp.value();
+  // he = heave.value();
+  // sw = sway.value();
+  // su = surge.value();
+  // da = damp.value();
+  he = 1;
+  sw = 1;
+  su = 1;
+  da = 10;
 
-  button1.mousePressed(saveDrawing);
+  // button1.mousePressed(saveDrawing);
 
   layer.begin();
   clear();
@@ -99,7 +74,7 @@ function draw() {
 
   layer.end(); //end frame buffer
 
-  showdata(100,[frameRate()]);
+  showdata(0,[frameRate()]);
 
   //apply depth buffer
   shader(Shader);

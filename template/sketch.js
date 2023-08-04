@@ -8,34 +8,12 @@ let accX, accY, accZ;
 
 let currRx = 0;
 
-function showUI(){
-  let gap = 40;
-  heave = createSlider(1, 6, 3, 0);
-  heave.position(120, 500);
-  heave.style('width', '200px');
-  sway = createSlider(1, 6, 3, 0);
-  sway.position(120, 500+gap);
-  sway.style('width', '200px');
-  surge = createSlider(1, 6, 3, 0);
-  surge.position(120, 500+gap*2);
-  surge.style('width', '200px');
-  damp = createSlider(1, 6, 3, 0);
-  damp.position(120, 500+gap*3);
-  damp.style('width', '200px');
-
-  p1 = createP('heave');
-  p1.style('font-size', '20px');
-  p1.position(330, 475);
-  p2 = createP('sway');
-  p2.style('font-size', '20px');
-  p2.position(330, 475+gap);
-  p3 = createP('surge');
-  p3.style('font-size', '20px');
-  p3.position(330, 475+gap*2);
-  p4 = createP('damp');
-  p4.style('font-size', '20px');
-  p4.position(330, 475+gap*3);
-}
+//motion parameter
+let he = 3;
+let sw = 3;
+let su = 2;
+let da = 15;
+let shown = false;
 
 function setup() {
   createCanvas(windowWidth,windowHeight,WEBGL);
@@ -43,11 +21,13 @@ function setup() {
 
   background('darkslategray');
 
+  tweak = createButton('tweak');
+  tweak.position(300,600);
+  tweak.mousePressed(showUI);
+
   camHeight = height/2/tan(PI/6);
   //framebuffer
   layer = createFramebuffer();
-  
-  showUI();
 }
 
 function draw() {
@@ -57,14 +37,16 @@ function draw() {
   Ry = rotation[2];
   Rx = rotation[1];  
   
-  he = heave.value();
-  sw = sway.value();
-  su = surge.value();
-  da = damp.value();
+  if (shown){
+    he = heave.value();
+    sw = sway.value();
+    su = surge.value();
+    da = damp.value();
+  }
 
   //start framebuffer
   layer.begin();
-
+  
   clear();
   noStroke();
   background(0);
@@ -79,7 +61,7 @@ function draw() {
 
   moveCamera(accelerationX,accelerationY,accelerationZ);
 
-  showdata(200,[heave.value(),sway.value(),surge.value()]);
+  // showdata(200,[he,sw,su,da]);
 
   layer.end(); //end frame buffer
 

@@ -18,6 +18,7 @@ let vert = 1;
 let waveWidth = 0;
 
 function setup() {
+  pixelDensity(1);
   createCanvas(windowWidth,windowHeight,WEBGL);
   noStroke();
   background(0);
