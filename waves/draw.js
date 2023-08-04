@@ -71,7 +71,7 @@ function wave(i){
     this.waveh = 10*i*(strength);
     fill("#"+palette[numLayers-i]);
     stroke("#"+strokePalette[numLayers-i]);
-    let weight = map(i/numLayers,0,1,5,2); 
+    let weight = map(i/numLayers,0,1,2,5); 
     strokeWeight(weight);
     beginShape();
     this.xoff = 0;
