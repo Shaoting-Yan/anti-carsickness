@@ -12,6 +12,7 @@ function preload(){
       })
     }
     // sky = loadImage('assets/sky.jpg');
+    boat = loadImage('assets/boat.png');
     helvetica = loadFont('assets/Helvetica.ttf');
     //for framebuffer
     Shader = loadShader('shaders/basic.vert', 'shaders/basic.frag');

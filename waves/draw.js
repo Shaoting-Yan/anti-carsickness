@@ -64,14 +64,19 @@ function pillars(c,m,r){
     sphere(50,50,50);
   }
 
-function wave(i){
+function wave(i,t,hasBoat){
   this.yoff = i*0.1;
   this.xoff = 0;
-  this.render = function render(i,strength,alpha){
+  this.t = t;
+  this.hasBoat = hasBoat;
+  this.render = function render(i,strength,color,stcolor){
+    let prevy;
     this.waveh = 10*i*(strength);
-    fill("#"+palette[numLayers-i]);
-    stroke("#"+strokePalette[numLayers-i]);
-    let weight = map(i/numLayers,0,1,2,5); 
+    let index = numLayers-i;
+    fill(color[index]);
+    stroke(stcolor[index]);
+
+    let weight = map(i/numLayers,0,1,3,6); 
     strokeWeight(weight);
     beginShape();
     this.xoff = 0;
@@ -81,36 +86,54 @@ function wave(i){
                     -this.waveh,
                     this.waveh); /// generate 2-d noise values
       vertex(x,y); /// construct wave form
+      
+      if(this.hasBoat && near(x,this.t*waveWidth,precision)){
+        boaty = y;
+        boatx = x;
+        prevfy = prevy;
+      }
       this.xoff += 0.02;
+      prevy = y;
     }
     this.yoff += 0.005;
     vertex(waveWidth, height); /// complete the wave layer
     vertex(waveWidth, height); /// tie the last x to the side if not perfect x10 width
     vertex(-waveWidth, height);
     endShape(CLOSE);
+
+    if(this.hasBoat){
+      push();
+      let angle = getAngle(precision,boaty-prevfy);
+      let boatw = 10+5*i;
+      let boath = 10+4*i;
+      translate(boatx,boaty-boath/3,-1);
+      rotateZ(angle);
+      imageMode(CENTER);
+      image(boat,0,0,boatw,boath);
+      pop();
+    }
   }
 }  
 
-function waves(currX,currY,numLayers){
+function waves(currX,currY,numLayers,fillcol,strokecol){
   push();
   rotateZ(HALF_PI-Rz);
   translate(currX-width/2,50+currY);
   for(let i = 0;i<numLayers;i++){
-    translate(0,0,i*10);
-    strength = map(abs(currY),0,10,1,2);
-    all[i].render(i+1,strength,100);
+    translate(0,0,i*12);
+    let strength = map(abs(currY),0,10,1,2);
+    // strength = 10;
+    all[i].render(i+1,strength,fillcol,strokecol);
   }
   pop();
 }
 
-function sun(x,y,p){
-  let r = 50;
-  let changed = r+breath(p,r);
+function drawSun(x,y,r,c){
   push()
-  translate(x,y,-changed);
+  translate(x,y,-r);
   noStroke();
-  fill('#F2C37E');
-  sphere(changed);
+  fill(c);
+  sphere(r);
   pop();
 }
 

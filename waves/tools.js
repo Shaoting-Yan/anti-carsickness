@@ -69,7 +69,7 @@ function getRotationMatrix( alpha, beta, gamma ) {
     }
     let camZ = camHeight + accZ;
 
-    //camera move due to up and down
+    //camera move due to palette.up and palettedown
     let dy = he*Math.sign(Ay)*(abs(Ay)**1.5);
     accY = accY == null ? 0 : accY+dy;
     if (accY != 0){                                        
@@ -107,4 +107,46 @@ function breath(time,range){
   let phase = map(frameCount%period,0,period,0,PI);
   let diff = sin(phase)*range;
   return diff;
+}
+
+function mixPalette(from, to, mid){
+  let l = from.length;
+  let out = [];
+  for (let i = 0; i<l; i++){
+    out[i] = lerpColor(from[i],to[i],mid);
+  }
+  return out;
+}
+
+function addPound(input){
+  return '#'+input;
+}
+
+function turnColor(input){
+  for (i=0;i<input.length;i++){
+    input[i] = color(addPound(input[i]));//turn into color
+  }
+  return input;
+}
+
+function makeStyle(up,down,angle,place){
+  downtext = down.toString('rgba');
+  uptext = up.toString('rgba');
+  angletext = str(angle);
+  placetext = str(place);
+  return 'linear-gradient('+angletext+'deg, '+downtext+''+placetext+'%, '+uptext+' 100%';
+}
+
+function mixSky(prev,curr,mid,angle,place){
+  newup = lerpColor(prev.up,curr.up,mid);
+  newdown = lerpColor(prev.down,curr.down,mid);
+  return makeStyle(newup, newdown,angle,place);
+}
+
+function getAngle(dx,dy){
+  return atan(dy/dx);
+}
+
+function near(x,t,p){
+  return ((x-t)<p);
 }
