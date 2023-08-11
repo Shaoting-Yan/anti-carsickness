@@ -19,8 +19,9 @@ class Palette{
   }
 
 function loadSun(){
-  risingSun = new Sun('BE3D07',75,200,-150);
-  noonSun = new Sun('F2C37E',50,-150,-300);
+  risingSun = new Sun('BE3D07',100,200,-100);
+  noonSun1 = new Sun('F2C37E',50,-50,-150);
+  noonSun2 = new Sun('F2C37E',50,-350,-150);
   risingMoon = new Sun('FFFFFF',75,200,-150);
   midnightMoon = new Sun('FFFFFF',50,-150,-300);
 }
@@ -30,9 +31,12 @@ function loadPalettes(){
     ['426C7E', '497182','7B98AC','7D9CAC','AFC1CB','E3EFEB','D7E6EF'],
     ['F48134','FFFFFF'],risingSun);
     
-    noon = new Palette('noon',['49636F','5D7683','859FAD','99B4C2','AFC9D8','CFE2EC','D3E3E8'],
+    noon1 = new Palette('noon',['49636F','5D7683','859FAD','99B4C2','AFC9D8','CFE2EC','D3E3E8'],
     ['6D8195','8699AE','9CB0BF','B6C7D1','C3D3DC','E5EDF1','FFFFFF'],
-    ['FFFFFF','528BAB'],noonSun);
+    ['FFFFFF','528BAB'],noonSun1);
+    noon2 = new Palette('noon',['49636F','5D7683','859FAD','99B4C2','AFC9D8','CFE2EC','D3E3E8'],
+    ['6D8195','8699AE','9CB0BF','B6C7D1','C3D3DC','E5EDF1','FFFFFF'],
+    ['FFFFFF','528BAB'],noonSun2);
     
     dusk = new Palette('dusk',['34718E','3E81A1','5694B3','679EBF','75A3BE','83ACC5','8AADC4'],
     ['549DBE', '67A9C9','71B0CE','93BDD7','A2C0D2','B3CCDB','B2CADA'],
@@ -50,5 +54,6 @@ function loadPalettes(){
     ['44525B','555F64','676767','738086','78868D','96ADA7','6F6F6F'],
     ['24292C','778B98'],null);
 
-    sequence = [sunrise,noon,dusk,moonrise,midnight,dawn];
+    sequence = [sunrise,noon1,noon2,dusk,moonrise,midnight,dawn,
+                sunrise,noon1,noon2,dusk,moonrise,midnight,dawn];
 }
