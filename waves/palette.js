@@ -19,7 +19,7 @@ class Palette{
   }
 
 function loadSun(){
-  risingSun = new Sun('BE3D07',100,200,-100);
+  risingSun = new Sun('BE3D07',75,200,-100);
   noonSun1 = new Sun('F2C37E',50,-50,-150);
   noonSun2 = new Sun('F2C37E',50,-350,-150);
   risingMoon = new Sun('FFFFFF',75,200,-150);
