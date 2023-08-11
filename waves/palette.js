@@ -34,9 +34,9 @@ function loadPalettes(){
     ['6D8195','8699AE','9CB0BF','B6C7D1','C3D3DC','E5EDF1','FFFFFF'],
     ['FFFFFF','528BAB'],noonSun);
     
-    dusk = new Palette('dusk',['09445F', '144F68','2F5F77','476F86','5A839B','6A90A7','6B90A8'],
-    ['426C7E', '497182','7B98AC','7D9CAC','AFC1CB','E3EFEB','BDCBD4'],
-    ['2B5064','7CC4EC'],null);
+    dusk = new Palette('dusk',['34718E','3E81A1','5694B3','679EBF','75A3BE','83ACC5','8AADC4'],
+    ['549DBE', '67A9C9','71B0CE','93BDD7','A2C0D2','B3CCDB','B2CADA'],
+    ['FFFFFF','3D7594'],null);
     
     moonrise = new Palette('moonrise',['042635','183747','2A4959','3D5B6C','506E80','648294','7896A8'],
           ['375562','3C5F71','4F6D7D','667A86','6E8C9E','9CAAB2','B4C2CB'],

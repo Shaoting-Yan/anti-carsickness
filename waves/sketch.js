@@ -127,20 +127,21 @@ function draw() {
     let place = 50 + int(accY/height*100)//for gradient positioning
 
     let ratio = 2; //ratio between stable palette and changing palette time
-    let speed = 2000;
+    let speed = 1000;
     let period = frameCount%speed/speed;
     let stage = map(period,0,1,0,sequence.length*ratio-1);
+
     currPalette = sequence[paletteIndex];
 
     iceberg = color('white');
 
-    if (Math.floor(stage)%ratio==0 && changing == false){//switching palette
+    if (Math.floor(stage%ratio)==0 && changing == false){//switching palette
       paletteIndex = (paletteIndex+1)%sequence.length;
       prevPalette = currPalette;
       currfill = currPalette.fill;
       currstroke = currPalette.stroke;
       changing = true;
-    }else if(Math.floor(stage)%ratio == 0){//during the changing phase
+    }else if(Math.floor(stage%ratio) == 0){//during the changing phase
       decimalPart = stage - Math.floor(stage);
       currfill = mixPalette(prevPalette.fill,currPalette.fill,decimalPart);
       currstroke = mixPalette(prevPalette.stroke,currPalette.stroke,decimalPart);
@@ -156,14 +157,17 @@ function draw() {
         let currR = map(decimalPart,0,1,prevSun.r,currSun.r);
         drawSun(0,currHeight,currR,suncol);
       }
+      if(currPalette.name == 'dusk'){
+        drawMoon(1,decimalPart*80);
+      }
       if(currPalette.name == 'moonrise'){
-        drawMoon(1,decimalPart*255);
+        drawMoon(1,160+decimalPart*95);
       }
-      if(currPalette.name == 'midnight'){
-        drawMoon(map(decimalPart,0,1,1,0),255);
+      if(currPalette.name == 'midnight'){ //ecllipse
+        drawMoon(map(decimalPart,0,1,1,0.75),255);
       }
-      if(currPalette.name == 'dawn'){
-        drawMoon(1,map(decimalPart,0,1,255,0));
+      if(currPalette.name == 'dawn'){//ecllipse
+        drawMoon(map(decimalPart,0,1,0.5,0.25),255);
       }
 
     }else{ //for normal stage
@@ -177,10 +181,15 @@ function draw() {
         let nextHeight = currSun.height+currSun.diff;
         currHeight = map(stage%ratio,1,ratio,currSun.height,nextHeight);
         drawSun(0,currHeight,currSun.r,currSun.color);
-      }else if (currPalette.name == 'midnight'){        
-        drawMoon(map(stage%ratio,1,ratio,0,-1),255);
-      }else if(currPalette.name == 'moonrise'){
+      }else if (currPalette.name == 'dusk'){
+        drawMoon(1,map(stage%ratio,1,ratio,80,160));
+      }
+      else if (currPalette.name == 'dawn'){        
+        drawMoon(map(stage%ratio,1,ratio,0.25,0),255);
+      }else if(currPalette.name == 'moonrise'||currPalette.name == 'dusk'){
         drawMoon(1,255);
+      }else if(currPalette.name == 'midnight'){
+        drawMoon(map(stage%ratio,1,ratio,0.75,0.5),255);
       }
     }
     

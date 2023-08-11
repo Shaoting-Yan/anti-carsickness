@@ -125,7 +125,7 @@ function waves(currX,currY,numLayers,fillcol,strokecol,volLevel,icebergCol){
     // let strength = map(abs(currY),0,10,1,2);
     if(i == 0){
       push();
-      translate(0,-20,-1);
+      translate(0,-15,-1);
       tint(dimmerRGB(icebergCol,3));
       image(back,0,0,waveWidth*2,40);
       pop();
@@ -146,7 +146,7 @@ function waves(currX,currY,numLayers,fillcol,strokecol,volLevel,icebergCol){
 
 function drawSun(x,y,r,c){
   push()
-  translate(x,y,-r);
+  translate(x,y,-r-0.1);
   noStroke();
   fill(c);
   sphere(r);
