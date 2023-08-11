@@ -43,12 +43,12 @@ function getRotationMatrix( alpha, beta, gamma ) {
     return [x, y, z];
   }
 
-  function randomColor(x,y){
-    var names = Object.keys(palette);
-    let index = int(map(noise(x,y),0,1,0,names.length));
-    let result = palette[names[index]];
-    return result;
-  }
+  // function randomColor(x,y){
+  //   var names = Object.keys(palette);
+  //   let index = int(map(noise(x,y),0,1,0,names.length));
+  //   let result = palette[names[index]];
+  //   return result;
+  // }
   
   function dimmer(c,f){
     return color(hue(c),saturation(c),constrain(brightness(c)*f,0,255));
@@ -92,8 +92,14 @@ function getRotationMatrix( alpha, beta, gamma ) {
     let camX = accX;
     let obX = accX;
 
+    //pitch movement
+    if (currRx != Rx){
+      currRx += (Rx-currRx); //Ease back
+    }
+    camY -= -camZ*tan(Rx-currRx);
+
     camera(camX, camY, camZ, obX, obY, 0,0,1,0);
-    perspective(PI / 3.0, width / height, camZ-175, camZ);
+    perspective(PI / 3.0, width / height, camZ, camZ+windowWidth);
   }
 
 function checkNull(sth){
@@ -104,4 +110,19 @@ function checkNull(sth){
   //   return sth.value();
   // }
   return 1;
+}
+
+function radialColor(x1,y1){//x,y,need to be normalized
+  let width = gradient.width;
+  let height = gradient.height;
+  
+  let x = int(width*x1);
+  let y = int(height*y1);
+
+  let red = gradientPixels[(x+y*width)*4];
+  let green = gradientPixels[(x+y*width)*4+1];
+  let blue = gradientPixels[(x+y*width)*4+2];
+
+  let result = color(red,green,blue);
+  return result;
 }

@@ -76,7 +76,7 @@ function wave(i,t,hasBoat){
     fill(color[index]);
     stroke(stcolor[index]);
 
-    let weight = map(i/numLayers,0,1,3,6); 
+    let weight = map(i/numLayers,0,1,2,4); 
     strokeWeight(weight);
     beginShape();
     this.xoff = 0;
@@ -101,27 +101,43 @@ function wave(i,t,hasBoat){
     vertex(-waveWidth, height);
     endShape(CLOSE);
 
-    if(this.hasBoat){
-      push();
-      let angle = getAngle(precision,boaty-prevfy);
-      let boatw = 10+5*i;
-      let boath = 10+4*i;
-      translate(boatx,boaty-boath/3,-1);
-      rotateZ(angle);
-      imageMode(CENTER);
-      image(boat,0,0,boatw,boath);
-      pop();
-    }
+    // if(this.hasBoat){
+    //   push();
+    //   let angle = getAngle(precision,boaty-prevfy);
+    //   let boatw = 10+5*i;
+    //   let boath = 10+4*i;
+    //   translate(boatx,boaty-boath/3,-1);
+    //   rotateZ(angle);
+    //   imageMode(CENTER);
+    //   image(bottle,0,0,boatw,boath);
+    //   pop();
+    // }
   }
 }  
 
-function waves(currX,currY,numLayers,fillcol,strokecol){
+function waves(currX,currY,numLayers,fillcol,strokecol,volLevel,icebergCol){
   push();
+  imageMode(CENTER);
   rotateZ(HALF_PI-Rz);
   translate(currX-width/2,50+currY);
   for(let i = 0;i<numLayers;i++){
     translate(0,0,i*12);
-    let strength = map(abs(currY),0,10,1,2);
+    // let strength = map(abs(currY),0,10,1,2);
+    if(i == 0){
+      push();
+      translate(0,-20,-1);
+      tint(dimmerRGB(icebergCol,3));
+      image(back,0,0,waveWidth*2,75);
+      pop();
+    }
+    if(i == 2){
+      push();
+      translate(0,-5,-1);
+      tint(dimmerRGB(icebergCol,4));
+      image(front,0,0,waveWidth*2,25);
+      pop();
+    }
+    let strength = volLevel;
     // strength = 10;
     all[i].render(i+1,strength,fillcol,strokecol);
   }
@@ -166,4 +182,29 @@ function showUI(){
   p4.style('font-size', '20px');
   p4.position(330, 475+gap*3);
   tweak.remove();
+}
+
+function drawMoon(eclipse,alpha){
+  let size = moon.width;
+  let maskPosition = size*eclipse;
+  moon.clear();
+  moon.background(0,0,0,0);
+  moon.noStroke();
+  moon.fill(255,255,255,alpha);
+  moon.circle(moon.width/2,moon.height/2,size);
+  moon.push();
+  moon.fill(254);
+  moon.translate(maskPosition,0);
+  moon.circle(moon.width/2,moon.height/2,size);
+  moon.pop();
+  moon.loadPixels();
+  moon.pixelDensity(1);
+  for (let i = 0; i < moon.pixels.length; i += 4) {
+    if (moon.pixels[i+1] != 255){ //detect non-white pixel
+        moon.pixels[i+3] = 0; // set to transparent;
+    }
+  } 
+  moon.updatePixels();
+  imageMode(CENTER);
+  image(moon,0,-200);
 }

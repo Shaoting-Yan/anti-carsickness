@@ -50,8 +50,19 @@ function getRotationMatrix( alpha, beta, gamma ) {
     return result;
   }
   
-  function dimmer(c,f){
-    return color(hue(c),saturation(c),constrain(brightness(c)*f,0,255));
+  // function geticebergCol(c,f){
+  //   push();
+  //   let hexCol = ("#" + hex(red(c),2) + hex(green(c),2) + hex(blue(c),2));
+  //   console.log(hexCol.convertToHSB());
+  //   let target = color(0);
+  //   colorMode(HSB);
+  //   let result = color(hue(target),saturation(target)/2,constrain(brightness(target)*f,0,255));
+  //   pop();
+  //   return result;
+  // }
+
+  function dimmerRGB(c,f){
+    return color(constrain(red(c)*f,0,255),constrain(green(c)*f,0,255),constrain(blue(c)*f,0,255));
   }
 
   function moveObject(Rx,Ry,Rz){
@@ -129,12 +140,12 @@ function turnColor(input){
   return input;
 }
 
-function makeStyle(up,down,angle,place){
-  downtext = down.toString('rgba');
-  uptext = up.toString('rgba');
+function makeStyle(upCol,downCol,angle,place){
+  downtext = downCol.toString('rgba');
+  uptext = upCol.toString('rgba');
   angletext = str(angle);
   placetext = str(place);
-  return 'linear-gradient('+angletext+'deg, '+downtext+''+placetext+'%, '+uptext+' 100%';
+  return ['linear-gradient('+angletext+'deg, '+downtext+''+placetext+'%, '+uptext+' 100%',downCol];
 }
 
 function mixSky(prev,curr,mid,angle,place){

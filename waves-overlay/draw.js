@@ -65,14 +65,19 @@ function pillars(c,m,r){
   }
 
 function wave(i){
-  this.yoff = i*0.1;
-  this.xoff = 0;
+  // this.yoff = i*0.1;
+  // this.xoff = 0;
+  this.yoff = 10;
+  this.xoff = 10;
   this.render = function render(i,strength,alpha){
-    this.waveh = 10*i*(strength);
-    fill("#"+palette[numLayers-i]);
-    // stroke("#"+strokePalette[numLayers-i]);
-    stroke(0);
-    strokeWeight(3);
+    // this.waveh = 10*i*(strength);
+    this.waveh = 50*(strength);
+    colorMode(HSL);
+    let currColor = color("#"+palette[numLayers-i]);
+    fill(currColor);
+    let currStroke = HSLlightness(currColor,0.5);
+    stroke(50);
+    strokeWeight(0);
     // // let weight = map(i/numLayers,0,1,2,5); // weihght varation 
     // strokeWeight(weight);
     beginShape();
@@ -94,12 +99,12 @@ function wave(i){
 }  
 
 function waves(currX,currY,numLayers){
-  let gap = 100/numLayers;
+  let gap = 20;
   push();
   rotateZ(HALF_PI-Rz);
-  translate(currX-width/2,50+currY);
+  translate(currX-width/2,currY);
   for(let i = 0;i<numLayers;i++){
-    translate(0,0,i*gap);//control spacing
+    translate(0,gap*i,1);//control spacing
     strength = map(abs(currY),0,10,1,2);
     all[i].render(i+1,strength,100);
   }

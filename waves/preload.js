@@ -13,6 +13,9 @@ function preload(){
     }
     // sky = loadImage('assets/sky.jpg');
     boat = loadImage('assets/boat.png');
+    bottle = loadImage('assets/bottle.png');
+    front = loadImage('assets/front iceberg.png');
+    back = loadImage('assets/back iceberg.png');
     helvetica = loadFont('assets/Helvetica.ttf');
     //for framebuffer
     Shader = loadShader('shaders/basic.vert', 'shaders/basic.frag');

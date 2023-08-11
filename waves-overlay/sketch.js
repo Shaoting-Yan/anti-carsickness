@@ -16,8 +16,8 @@ let da = 15;
 let shown = false;
 
 //colors
-palette = ['46605D','5D867E','6B9B91','7BB0A8','ADD5CA','D8E4E0'];
-
+palette = ['D77597','7DF1E6','BEF190','AFD98A','F2F2F2'];
+// palette = ['126BEB','1B8BBB','79BE60','D8A531','EF3837'];
 //wave parameter
 let precision = 10;
 let all = [];
@@ -70,7 +70,7 @@ function draw() {
   let currX = Ry*camHeight;
 
   moveCamera(accelerationX,accelerationY,accelerationZ);
-
+  orbitControl();
   // sun(0,0,p);//x,y,period
 
   waves(currX,accY/25,numLayers);

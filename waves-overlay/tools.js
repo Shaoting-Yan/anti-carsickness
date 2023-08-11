@@ -54,6 +54,14 @@ function getRotationMatrix( alpha, beta, gamma ) {
     return color(hue(c),saturation(c),constrain(brightness(c)*f,0,255));
   }
 
+  function HSLsaturation(c,f){
+    return color(hue(c),constrain(saturation(c)*f,0,255),lightness(c));
+  }
+
+  function HSLlightness(c,f){
+    return color(hue(c),saturation(c),constrain(lightness(c)*f,0,255));
+  }
+
   function moveObject(Rx,Ry,Rz){
     let currX = camHeight*Ry;   //for left right rotation
     rotateZ(HALF_PI-Rz);        //tilting
@@ -98,7 +106,7 @@ function getRotationMatrix( alpha, beta, gamma ) {
     }
     camY -= -camZ*tan(Rx-currRx);
 
-    camera(camX, camY-200, camZ, obX, obY, 0,0,1,0);
+    camera(camX, camY, camZ, obX, obY, 0,0,1,0);
     // perspective(PI / 3.0, width / height, camZ-140, camZ);
   }
 

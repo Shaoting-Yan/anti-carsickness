@@ -13,6 +13,8 @@ function preload(){
     }
   
     helvetica = loadFont('assets/Helvetica.ttf');
+    gradient = loadImage('assets/gradient.jpg');
+    pillar = loadModel('assets/pillar.obj');
     //for framebuffer
     Shader = loadShader('shaders/basic.vert', 'shaders/basic.frag');
   }

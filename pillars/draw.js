@@ -1,12 +1,17 @@
+
 function pillars(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
     let fullcount = int(PI*camHeight/cell);
     for(i=-fullcount;i<fullcount;i+=1){
       for(j=-10;j<10;j+=1){
         push();
-        translate(i*cell,j*cell,r*2);
+        let currColor = radialColor((i+fullcount)/(fullcount*2),(j+10)/20);
+        emissiveMaterial(currColor);
+        translate(i*cell,j*cell,-r*10);
         rotateX(HALF_PI);
-        cylinder(r,r*4);
+        cylinder(r,r*10);
+        // scale(3);
+        // model(pillar);
         pop();
       }
     }

@@ -1,3 +1,4 @@
-function mouseisPressed(){
-  showdata();
+function mousePressed() {
+  pressed = true;
+  userStartAudio();
 }

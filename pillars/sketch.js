@@ -47,8 +47,10 @@ function setup() {
   camHeight = height/2/tan(PI/6);
   //framebuffer
   layer = createFramebuffer();
-  
+  gradient.loadPixels();
+  gradientPixels = gradient.pixels;
   // showUI();
+  fog = color('white');
 }
 
 function draw() {
@@ -69,11 +71,12 @@ function draw() {
 
   //start framebuffer
   layer.begin();
-
+  
   clear();
   noStroke();
   background(0);
-  lights();
+  // lights();
+  // ambientLight(255);
 
   push();
   moveObject(Rx,Ry,Rz);
@@ -91,5 +94,6 @@ function draw() {
   shader(Shader);
   Shader.setUniform('depth', layer.depth);
   Shader.setUniform('img', layer.color);
+  Shader.setUniform('fog',[red(fog), green(fog), blue(fog)]);
   rect(0,0,width,height);
 }
