@@ -127,7 +127,7 @@ function waves(currX,currY,numLayers,fillcol,strokecol,volLevel,icebergCol){
       push();
       translate(0,-20,-1);
       tint(dimmerRGB(icebergCol,3));
-      image(back,0,0,waveWidth*2,75);
+      image(back,0,0,waveWidth*2,40);
       pop();
     }
     if(i == 2){
