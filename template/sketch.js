@@ -16,6 +16,7 @@ let da = 15;
 let shown = false;
 
 function setup() {
+  pixelDensity(1);
   createCanvas(windowWidth,windowHeight,WEBGL);
   textFont(helvetica);
 

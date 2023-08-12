@@ -1,0 +1,11 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+  background-image: url("assets/wechat mid.jpg");/*background*/
+  background-size: cover;
+  background-repeat: no-repeat;
+}

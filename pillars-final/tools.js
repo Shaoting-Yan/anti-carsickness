@@ -43,12 +43,12 @@ function getRotationMatrix( alpha, beta, gamma ) {
     return [x, y, z];
   }
 
-  // function randomColor(x,y){
-  //   var names = Object.keys(palette);
-  //   let index = int(map(noise(x,y),0,1,0,names.length));
-  //   let result = palette[names[index]];
-  //   return result;
-  // }
+  function randomColor(x,y){
+    var names = Object.keys(palette);
+    let index = int(map(noise(x,y),0,1,0,names.length));
+    let result = palette[names[index]];
+    return result;
+  }
   
   function dimmer(c,f){
     return color(hue(c),saturation(c),constrain(brightness(c)*f,0,255));
@@ -94,35 +94,21 @@ function getRotationMatrix( alpha, beta, gamma ) {
 
     //pitch movement
     if (currRx != Rx){
-      currRx += (Rx-currRx)/1000; //Ease back
+      currRx += (Rx-currRx)/da; //Ease back
     }
-    camY -= -camZ*tan(Rx-currRx)*100;
+    camY -= -camZ*tan(Rx-currRx);
 
     camera(camX, camY, camZ, obX, obY, 0,0,1,0);
-    perspective(PI / 3.0, width / height, camZ, camZ+windowWidth);
+    // perspective(PI / 3.0, width / height, camZ-140, camZ);
   }
 
-function checkNull(sth){
-  // if (sth == null){
-  //   console.log("here");
-  //   return 1;
-  // }else{
-  //   return sth.value();
-  // }
-  return 1;
-}
-
-function radialColor(x1,y1){//x,y,need to be normalized
-  let width = gradient.width;
-  let height = gradient.height;
-  
-  let x = int(width*x1);
-  let y = int(height*y1);
-
-  let red = gradientPixels[(x+y*width)*4];
-  let green = gradientPixels[(x+y*width)*4+1];
-  let blue = gradientPixels[(x+y*width)*4+2];
-
-  let result = color(red,green,blue);
-  return result;
-}
+  function getColor(x,y){//x,y need to be normalized
+    let x1 = floor(x*ground.width);
+    let y1 = floor(y*ground.height);
+    let location = (x1+y1*(ground.width))*4;
+    let r = buffer[location];
+    let g = buffer[location+1];
+    let b = buffer[location+2];
+    result = color(r,g,b);
+    return result;//from the ground pixels
+  }

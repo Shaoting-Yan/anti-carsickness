@@ -51,6 +51,7 @@ function setup() {
   gradientPixels = gradient.pixels;
   // showUI();
   fog = color('white');
+  showUI();
 }
 
 function draw() {
