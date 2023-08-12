@@ -99,7 +99,7 @@ function getRotationMatrix( alpha, beta, gamma ) {
     camY -= -camZ*tan(Rx-currRx);
 
     camera(camX, camY, camZ, obX, obY, 0,0,1,0);
-    // perspective(PI / 3.0, width / height, camZ-140, camZ);
+    perspective(PI / 3.0, width / height, camZ-above-1, camZ+below+1);
   }
 
   function getColor(x,y){//x,y need to be normalized

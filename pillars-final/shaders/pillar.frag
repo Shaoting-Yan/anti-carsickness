@@ -1,8 +1,8 @@
 precision highp float;
-const float EPSILON = 1e-10;
+const float EPSILON = 1e-13;
 varying vec2 vTexCoord;
 uniform sampler2D img;
-// uniform sampler2D depth;
+uniform sampler2D depth;
 uniform vec2 resolution;
 uniform float time;
 
@@ -25,9 +25,23 @@ vec3 hsv2rgb(vec3 c)
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
+float cap(float d){
+  if(d<0.99){
+    return 1.0;
+  }
+  return 0.0;
+}
+
 void main() {
   // float d = 1.0 - texture2D(depth, vTexCoord).r;
   // gl_FragColor = vec4(d,d,d,1.0);
+  float d = texture2D(depth, vTexCoord).r;
   vec2 coord = vTexCoord;
-  gl_FragColor = vec4(texture2D(img, vTexCoord));
+  vec3 RGB = vec3(texture2D(img, vTexCoord)).rgb;
+  vec3 HSV = rgb2hsv(RGB);
+  float H = HSV.x;
+  float S = HSV.y*(1.0-d);//the nearer the more saturated
+  float V = HSV.z;
+  vec3 final = hsv2rgb(vec3(H,S,V));
+  gl_FragColor = vec4(final,1.0);
 }

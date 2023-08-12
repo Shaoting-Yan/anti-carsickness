@@ -2,24 +2,25 @@ function pillars(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
     let size = 10;
     let currColor = color('white');
+    let length = 4;
     for(i=-size;i<size;i+=1){
       for(j=-size;j<size;j+=1){
         push();
         let currX = i*cell;
         let currY = j*cell;
-        translate(currX,currY,r*2);
+        translate(currX,currY,0);
         rotateX(HALF_PI);
 
         let x = (i+size)/(size*2);
         let y = (j+size)/(size*2);//normalize cordinates
-
         let currColor = getColor(x,y);
         fill(currColor);
-        cylinder(r,r*4,24,1);
+        cylinder(r,r*length);
         pop();
       }
     }
-    toplevel = r*5;
+    above = r*length/2;
+    below = r*length/2;
   }
 
   function boxs(c,m,r){

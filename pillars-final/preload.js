@@ -16,7 +16,8 @@ function preload(){
     gradient = loadImage('assets/gradient.jpg');
     //for framebuffer
     groundShader = loadShader('shaders/ground.vert', 'shaders/ground.frag');
-    pillarShader = loadShader('shaders/pillar.vert', 'shaders/pillar.frag');
+    pillarShader = loadShader('shaders/pillar.vert', 'shaders//pillar.frag');
+    basicShader = loadShader('shaders/basic.vert', 'shaders//basic.frag');
   }
   
   function requestAccess(){

@@ -40,6 +40,10 @@ function setup() {
 }
 
 function draw() {
+  let rotation = getEulerAngles(getRotationMatrix(rotationZ,rotationX,rotationY));
+  Rz = rotation[0];
+  Ry = rotation[2];
+  Rx = rotation[1]; 
 
   if (frameCount%1 == 0){//update rate
     buffer = ground.get(0,0,ground.width,ground.height).pixels;//update buffer
@@ -57,15 +61,32 @@ function draw() {
 
   clear();
 
-  orbitControl();
+  
 
+  layer.begin();
+  // orbitControl();
+  clear();
+  // ambientLight(255);
+  lights();
+  rect(0,0,50,50);
   push();
   fill(255);
-  pillars(3,-25,width/12);
+  moveObject(Rx,Ry,Rz);
+  top = pillars(3,-25,width/12);
   pop();
 
-  imageMode(CENTER);
-  image(ground,0,0,1000,1000);
+  moveCamera(accelerationX,accelerationY,accelerationZ);
+  layer.end();
+  
+  
+  pillarShader.setUniform('img', layer.color);
+  pillarShader.setUniform('depth', layer.depth);
+  pillarShader.setUniform('time', frameCount*0.01);
+
+  basicShader.setUniform('img', layer.color);//for testing
+
+  shader(basicShader);
+  rect(0,0,width,height);
 }
 
 
