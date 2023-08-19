@@ -1,10 +1,15 @@
 precision highp float;
-const float EPSILON = 1e-13;
+
+#define PI 3.14159265358979323846
+
+const float EPSILON = 1e-10;
 varying vec2 vTexCoord;
-uniform sampler2D img;
-uniform sampler2D depth;
+uniform sampler2D uImg;
+uniform sampler2D uGround;
+uniform sampler2D uDepth;
 uniform vec2 resolution;
 uniform float time;
+uniform float burn;
 
 //https://gist.github.com/983/e170a24ae8eba2cd174f
 vec3 rgb2hsv(vec3 c)
@@ -25,23 +30,84 @@ vec3 hsv2rgb(vec3 c)
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-float cap(float d){
-  if(d<0.99){
-    return 1.0;
-  }
-  return 0.0;
+//code from https://www.davepagurek.com/blog/depth-of-field/
+
+const int MAX_NUM_SAMPLES = 20;
+uniform vec2 uSize;
+uniform float uIntensity;
+uniform int uNumSamples;
+uniform float uTargetZ;
+uniform float uNear;
+uniform float uFar;
+
+float rand(vec2 co){
+  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+float depthToZ(float depth) {
+  float depthNormalized = 2.0 * depth - 1.0;
+  return 2.0 * uNear * uFar / (uFar + uNear - depthNormalized * (uFar - uNear));
+}
+
+float calcBlur(float z, float pixelScale) {
+  return clamp(abs(z - uTargetZ), 0.0, 0.5*pixelScale);//maximum half screen sampling range
+}
+
+//saturation change with depth
+vec4 changeSaturation(vec4 color, float d, float alpha){
+  vec3 RGB = color.rgb;
+  vec3 HSV = rgb2hsv(RGB);
+  float H = HSV.x;
+  /*
+  the nearer the more saturated,but keep the ground saturated,
+  the ground will be use to sample blur
+  */
+  float S = HSV.y*mix(1.0,(1.0-d),alpha);
+  float V = HSV.z;
+  vec4 final = vec4(hsv2rgb(vec3(H,S,V)),1.0);
+  return final;
 }
 
 void main() {
-  // float d = 1.0 - texture2D(depth, vTexCoord).r;
-  // gl_FragColor = vec4(d,d,d,1.0);
-  float d = texture2D(depth, vTexCoord).r;
-  vec2 coord = vTexCoord;
-  vec3 RGB = vec3(texture2D(img, vTexCoord)).rgb;
-  vec3 HSV = rgb2hsv(RGB);
-  float H = HSV.x;
-  float S = HSV.y*(1.0-d);//the nearer the more saturated
-  float V = HSV.z;
-  vec3 final = hsv2rgb(vec3(H,S,V));
-  gl_FragColor = vec4(final,1.0);
+  vec4 rawColor = texture2D(uImg, vTexCoord).rgba;
+  // vec4 groundColor = texture2D(uGround, vTexCoord).rgba;//use flow gradient as background
+  float alpha = rawColor.a;
+
+//code from https://www.davepagurek.com/blog/depth-of-field/
+  float pixelScale = max(uSize.x, uSize.y);
+  float total = 1.0;
+
+  vec4 color = vec4(rawColor.rgb,1.0);
+
+  float origZ = depthToZ(texture2D(uDepth, vTexCoord).x);
+  float blurAmt = calcBlur(origZ, pixelScale);
+  for (int i = 0; i < MAX_NUM_SAMPLES; i++) {
+    if (i >= uNumSamples) break;
+    float t = (float(i + 1) / float(uNumSamples));
+    float angle = (t*4.0)*(2.0*PI);
+    float radius = 1.0 - (t*t*t); // Sample more on the outer edge
+    angle += 1.*rand(gl_FragCoord.xy);
+    vec2 offset = (vec2(cos(angle),sin(angle)) * radius * uIntensity * blurAmt)/pixelScale;
+    float z = depthToZ(texture2D(uDepth, vTexCoord + offset).x);
+    float sampleBlur = calcBlur(z, pixelScale);
+
+    //float weight = float(z >= origZ);
+    float weight = float((z >= origZ) || (sampleBlur >= blurAmt*radius + 0.));
+    
+    vec4 rawSample = texture2D(uImg, vTexCoord + offset).rgba;
+    vec4 sample = vec4(rawSample.rgb,1.0);
+
+    color += weight * sample;
+    total += weight;
+  }
+  color /= total;
+
+  //extract depth info
+  float d = clamp(pow(texture2D(uDepth, vTexCoord).r,0.3),0.0,1.0);
+
+  // d = pow(d,burn);
+  color = changeSaturation(color,d,alpha);
+
+  gl_FragColor = color;
+  // gl_FragColor = vec4(vec3(d),1.0);
 }

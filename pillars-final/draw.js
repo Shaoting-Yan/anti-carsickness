@@ -1,26 +1,24 @@
 function pillars(c,m,r){
     let cell = (windowWidth-2*r-2*m)/c;
-    let size = 10;
-    let currColor = color('white');
-    let length = 4;
+    let size = int(camHeight*PI/cell)+1;//cover full view range
+    above = 4*r;
+    below = 6*r;
+    let diff = (above+below)/2-below;
     for(i=-size;i<size;i+=1){
       for(j=-size;j<size;j+=1){
         push();
         let currX = i*cell;
         let currY = j*cell;
-        translate(currX,currY,0);
+        translate(currX,currY,diff);
         rotateX(HALF_PI);
-
         let x = (i+size)/(size*2);
         let y = (j+size)/(size*2);//normalize cordinates
         let currColor = getColor(x,y);
         fill(currColor);
-        cylinder(r,r*length);
+        cylinder(r,above+below);
         pop();
       }
     }
-    above = r*length/2;
-    below = r*length/2;
   }
 
   function boxs(c,m,r){
@@ -78,30 +76,37 @@ function pillars(c,m,r){
   function showUI(){
     shown = true;
     let gap = 40;
+    let top = 450;
     heave = createSlider(0.1, 6, he, 0);
-    heave.position(120, 500);
+    heave.position(120, top);
     heave.style('width', '200px');
     sway = createSlider(0.1, 6, sw, 0);
-    sway.position(120, 500+gap);
+    sway.position(120, top+gap);
     sway.style('width', '200px');
     surge = createSlider(0.1, 6, su, 0);
-    surge.position(120, 500+gap*2);
+    surge.position(120, top+gap*2);
     surge.style('width', '200px');
     damp = createSlider(1, 30, da, 0);
-    damp.position(120, 500+gap*3);
+    damp.position(120, top+gap*3);
     damp.style('width', '200px');
+    burn = createSlider(0.0, 5.0, bu, 0);
+    burn.position(120, top+gap*4);
+    burn.style('width', '200px');
   
     p1 = createP('heave');
     p1.style('font-size', '20px');
-    p1.position(330, 475);
+    p1.position(330, top-25);
     p2 = createP('sway');
     p2.style('font-size', '20px');
-    p2.position(330, 475+gap);
+    p2.position(330, top-25+gap);
     p3 = createP('surge');
     p3.style('font-size', '20px');
-    p3.position(330, 475+gap*2);
+    p3.position(330, top-25+gap*2);
     p4 = createP('damp');
     p4.style('font-size', '20px');
-    p4.position(330, 475+gap*3);
+    p4.position(330, top-25+gap*3);
+    p5 = createP('burn');
+    p5.style('font-size', '20px');
+    p5.position(330, top-25+gap*4);
     tweak.remove();
   }

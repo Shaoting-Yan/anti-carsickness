@@ -98,17 +98,30 @@ function getRotationMatrix( alpha, beta, gamma ) {
     }
     camY -= -camZ*tan(Rx-currRx);
 
+    let normal = abs(atan((camY-obY)/camZ));
+    let a = PI/6.0-normal;
+    let c = (camZ-above)/cos(a);
+    let h = c*cos(PI/6);
+
+    near = h-1;
+    far = (camZ+below)*2;
+
     camera(camX, camY, camZ, obX, obY, 0,0,1,0);
-    perspective(PI / 3.0, width / height, camZ-above-1, camZ+below+1);
+    perspective(PI / 3.0, width / height, near, far);
   }
 
-  function getColor(x,y){//x,y need to be normalized
-    let x1 = floor(x*ground.width);
-    let y1 = floor(y*ground.height);
-    let location = (x1+y1*(ground.width))*4;
-    let r = buffer[location];
-    let g = buffer[location+1];
-    let b = buffer[location+2];
-    result = color(r,g,b);
-    return result;//from the ground pixels
-  }
+function getnearfar(normal,camAngle,camZ){
+  let h = camZ - above;
+  let a = normal
+}
+
+function getColor(x,y){//x,y need to be normalized
+  let x1 = floor(x*ground.width);
+  let y1 = floor(y*ground.height);
+  let location = (x1+y1*(ground.width))*4;
+  let r = buffer[location];
+  let g = buffer[location+1];
+  let b = buffer[location+2];
+  result = color(r,g,b);
+  return result;//from the ground pixels
+}
